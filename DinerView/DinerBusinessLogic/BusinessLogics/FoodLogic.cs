@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using DinerBusinessLogic.BindingModels;
 using DinerBusinessLogic.Interfaces;
 using DinerBusinessLogic.ViewModels;
@@ -30,7 +29,6 @@ namespace DinerBusinessLogic.BusinessLogics
         {
             var element = _foodStorage.GetElement(new FoodBindingModel { 
             FoodName = model.FoodName });
-
             if (element != null && element.Id != model.Id)
             {
                 throw new Exception("Уже есть продукт с таким названием!");

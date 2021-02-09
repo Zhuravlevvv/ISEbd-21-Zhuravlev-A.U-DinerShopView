@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using DinerBusinessLogic.BindingModels;
 using DinerBusinessLogic.Interfaces;
 using DinerBusinessLogic.ViewModels;
@@ -25,6 +24,7 @@ namespace DinerViewListImplement.Implements
             }
             return result;
         }
+
         public List<FoodViewModel> GetFilteredList(FoodBindingModel model)
         {
             if (model == null)
@@ -110,6 +110,5 @@ namespace DinerViewListImplement.Implements
                 FoodName = food.FoodName
             };
         }
-
     }
 }

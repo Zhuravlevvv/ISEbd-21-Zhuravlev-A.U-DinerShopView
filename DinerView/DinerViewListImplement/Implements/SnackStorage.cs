@@ -56,7 +56,6 @@ namespace DinerViewListImplement.Implements
             }
             return null;
         }
-
         public void Insert(SnackBindingModel model)
         {
             Snack tempSnack = new Snack
@@ -155,6 +154,5 @@ namespace DinerViewListImplement.Implements
                 SnackFoods = snackFoods
             };
         }
-
     }
 }

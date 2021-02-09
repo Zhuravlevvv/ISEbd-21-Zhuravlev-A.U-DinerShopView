@@ -14,6 +14,5 @@ namespace DinerBusinessLogic.Interfaces
         void Insert(FoodBindingModel model);
         void Update(FoodBindingModel model);
         void Delete(FoodBindingModel model);
-
     }
 }

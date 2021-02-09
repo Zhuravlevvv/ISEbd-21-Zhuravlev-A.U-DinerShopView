@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using DinerBusinessLogic.BindingModels;
 using DinerBusinessLogic.Enums;
 using DinerBusinessLogic.Interfaces;
@@ -11,12 +10,10 @@ namespace DinerBusinessLogic.BusinessLogics
     public class OrderLogic
     {
         private readonly IOrderStorage _orderStorage;
-
         public OrderLogic(IOrderStorage orderStorage)
         {
             _orderStorage = orderStorage;
         }
-
         public List<OrderViewModel> Read(OrderBindingModel model)
         {
             if (model == null)
@@ -30,7 +27,6 @@ namespace DinerBusinessLogic.BusinessLogics
             }
             return _orderStorage.GetFilteredList(model);
         }
-
         public void CreateOrder(CreateOrderBindingModel model)
         {
             _orderStorage.Insert(new OrderBindingModel
@@ -42,7 +38,6 @@ namespace DinerBusinessLogic.BusinessLogics
                 Status = OrderStatus.Принят
             });
         }
-
         public void TakeOrderInWork(ChangeStatusBindingModel model)
         {
             var order = _orderStorage.GetElement(new OrderBindingModel {
@@ -68,7 +63,6 @@ namespace DinerBusinessLogic.BusinessLogics
                 Status = OrderStatus.Выполняется
             });
         }
-
         public void FinishOrder(ChangeStatusBindingModel model)
         {
             var order = _orderStorage.GetElement(new OrderBindingModel { 
@@ -93,7 +87,6 @@ namespace DinerBusinessLogic.BusinessLogics
                 Status = OrderStatus.Готов
             });                     
         }
-
         public void PayOrder(ChangeStatusBindingModel model)
         {
             var order = _orderStorage.GetElement(new OrderBindingModel { 
