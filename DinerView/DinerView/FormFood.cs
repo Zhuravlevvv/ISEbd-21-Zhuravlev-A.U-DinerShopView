@@ -28,7 +28,6 @@ namespace DinerView
             InitializeComponent();
             this.logic = logic;
         }
-
         private void FormFood_Load(object sender, EventArgs e)
         {
             if (id.HasValue)
@@ -50,7 +49,6 @@ namespace DinerView
                 }
             }
         }
-
         private void buttonSave_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(textBoxProductName.Text))
@@ -77,7 +75,6 @@ namespace DinerView
                 MessageBoxIcon.Error);
             }
         }
-
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;

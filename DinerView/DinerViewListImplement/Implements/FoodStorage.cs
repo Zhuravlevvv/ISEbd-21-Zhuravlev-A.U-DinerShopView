@@ -14,7 +14,6 @@ namespace DinerViewListImplement.Implements
         {
             source = DataListSingleton.GetInstance();
         }
-
         public List<FoodViewModel> GetFullList()
         {
             List<FoodViewModel> result = new List<FoodViewModel>();
@@ -24,7 +23,6 @@ namespace DinerViewListImplement.Implements
             }
             return result;
         }
-
         public List<FoodViewModel> GetFilteredList(FoodBindingModel model)
         {
             if (model == null)

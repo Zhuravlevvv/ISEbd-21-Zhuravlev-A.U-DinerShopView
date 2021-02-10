@@ -24,12 +24,10 @@ namespace DinerView
             InitializeComponent();
             this.logic = logic;
         }
-
         private void FormFoods_Load(object sender, EventArgs e)
         {
             LoadData();
         }
-
         private void LoadData()
         {
             try
@@ -47,7 +45,6 @@ namespace DinerView
                 MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private void buttonAdd_Click(object sender, EventArgs e)
         {
             var form = Container.Resolve<FormFood>();
@@ -56,7 +53,6 @@ namespace DinerView
                 LoadData();
             }
         }
-
         private void buttonUpd_Click(object sender, EventArgs e)
         {
             if (dataGridViewFoods.SelectedRows.Count == 1)
@@ -69,7 +65,6 @@ namespace DinerView
                 }
             }
         }
-
         private void buttonDel_Click(object sender, EventArgs e)
         {
            if (dataGridViewFoods.SelectedRows.Count == 1)
@@ -92,7 +87,6 @@ namespace DinerView
                 }
             }
         }
-
         private void buttonRef_Click(object sender, EventArgs e)
         {
             LoadData();

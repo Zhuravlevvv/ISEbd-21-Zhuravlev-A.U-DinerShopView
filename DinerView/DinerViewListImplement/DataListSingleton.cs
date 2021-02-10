@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DinerViewListImplement.Models
 {
-    class DataListSingleton
+    public class DataListSingleton
     {
         private static DataListSingleton instance;
         public List<Food> Foods { get; set; }
