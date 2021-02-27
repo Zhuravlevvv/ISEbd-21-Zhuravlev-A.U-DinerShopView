@@ -1,7 +1,7 @@
 ﻿using System;
 using DinerBusinessLogic.BusinessLogics;
 using DinerBusinessLogic.Interfaces;
-using DinerViewListImplement.Implements;
+using DinerViewFileImplement.Implements;
 using System.Windows.Forms;
 using Unity;
 using Unity.Lifetime;
