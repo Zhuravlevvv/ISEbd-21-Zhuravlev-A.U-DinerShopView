@@ -10,7 +10,7 @@ namespace DinerViewFileImplement.Implements
 {
     public class OrderStorage : IOrderStorage
     {
-        private readonly FileDataListSingleton source;
+        private readonly FileDataListSingleton sourse;
 
         private Order CreateModel(OrderBindingModel model, Order order)
         {
@@ -29,7 +29,7 @@ namespace DinerViewFileImplement.Implements
             return new OrderViewModel
             {
                 Id = order.Id,
-                SnackName = source.Snacks.FirstOrDefault(snack => snack.Id == order.SnackId)?.SnackName,
+                SnackName = sourse.Snacks.FirstOrDefault(snack => snack.Id == order.SnackId)?.SnackName,
                 SnackId = order.SnackId,
                 Count = order.Count,
                 Sum = order.Sum,
@@ -41,12 +41,12 @@ namespace DinerViewFileImplement.Implements
 
         public OrderStorage()
         {
-            source = FileDataListSingleton.GetInstance();
+            sourse = FileDataListSingleton.GetInstance();
         }
 
         public List<OrderViewModel> GetFullList()
         {
-            return source.Orders.Select(CreateModel).ToList();
+            return sourse.Orders.Select(CreateModel).ToList();
         }
 
         public List<OrderViewModel> GetFilteredList(OrderBindingModel model)
@@ -56,7 +56,7 @@ namespace DinerViewFileImplement.Implements
                 return null;
             }
 
-            return source.Orders.Where(recOrder => recOrder.Id == model.Id).Select(CreateModel).ToList();
+            return sourse.Orders.Where(recOrder => recOrder.Id == model.Id).Select(CreateModel).ToList();
         }
 
         public OrderViewModel GetElement(OrderBindingModel model)
@@ -66,21 +66,21 @@ namespace DinerViewFileImplement.Implements
                 return null;
             }
 
-            var order = source.Orders.FirstOrDefault(recOder => recOder.Id == model.Id);
+            var order = sourse.Orders.FirstOrDefault(recOder => recOder.Id == model.Id);
 
             return order != null ? CreateModel(order) : null;
         }
 
         public void Insert(OrderBindingModel model)
         {
-            int maxId = source.Orders.Count > 0 ? source.Orders.Max(recOder => recOder.Id) : 0;
+            int maxId = sourse.Orders.Count > 0 ? sourse.Orders.Max(recOder => recOder.Id) : 0;
             var order = new Order { Id = maxId + 1 };
-            source.Orders.Add(CreateModel(model, order));
+            sourse.Orders.Add(CreateModel(model, order));
         }
 
         public void Update(OrderBindingModel model)
         {
-            var order = source.Orders.FirstOrDefault(recOder => recOder.Id == model.Id);
+            var order = sourse.Orders.FirstOrDefault(recOder => recOder.Id == model.Id);
 
             if (order == null)
             {
@@ -92,11 +92,11 @@ namespace DinerViewFileImplement.Implements
 
         public void Delete(OrderBindingModel model)
         {
-            var order = source.Orders.FirstOrDefault(recOrder => recOrder.Id == model.Id);
+            var order = sourse.Orders.FirstOrDefault(recOrder => recOrder.Id == model.Id);
 
             if (order != null)
             {
-                source.Orders.Remove(order);
+                sourse.Orders.Remove(order);
             }
             else
             {

@@ -24,16 +24,12 @@ namespace DinerView
         private static IUnityContainer BuildUnityContainer()
         {
             var currentContainer = new UnityContainer();
-            currentContainer.RegisterType<IFoodStorage, FoodStorage>(new
-           HierarchicalLifetimeManager());
-            currentContainer.RegisterType<IOrderStorage, OrderStorage>(new
-           HierarchicalLifetimeManager());
-            currentContainer.RegisterType<ISnackStorage, SnackStorage>(new
-           HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IFoodStorage, FoodStorage>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IOrderStorage, OrderStorage>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<ISnackStorage, SnackStorage>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<FoodLogic>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<OrderLogic>(new HierarchicalLifetimeManager());
-            currentContainer.RegisterType<SnackLogic>(new
-           HierarchicalLifetimeManager());
+            currentContainer.RegisterType<SnackLogic>(new HierarchicalLifetimeManager());
             return currentContainer;
         }
     }
