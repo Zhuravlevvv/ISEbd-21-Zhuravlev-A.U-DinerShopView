@@ -11,12 +11,10 @@ namespace DinerViewFileImplement.Implements
     public class SnackStorage : ISnackStorage
     {
         private readonly FileDataListSingleton source;
-
         private Snack CreateModel(SnackBindingModel model, Snack snack)
         {
             snack.SnackName = model.SnackName;
             snack.Price = model.Price;
-
             foreach (var key in snack.SnackFoods.Keys.ToList())
             {
                 if (!model.SnackFoods.ContainsKey(key))
@@ -24,7 +22,6 @@ namespace DinerViewFileImplement.Implements
                     snack.SnackFoods.Remove(key);
                 }
             }
-
             foreach (var food in model.SnackFoods)
             {
                 if (snack.SnackFoods.ContainsKey(food.Key))
@@ -36,10 +33,8 @@ namespace DinerViewFileImplement.Implements
                     snack.SnackFoods.Add(food.Key, model.SnackFoods[food.Key].Item2);
                 }
             }
-
             return snack;
         }
-
         private SnackViewModel CreateModel(Snack snack)
         {
             return new SnackViewModel
@@ -51,17 +46,14 @@ namespace DinerViewFileImplement.Implements
                 (source.Foods.FirstOrDefault(food => food.Id == snackFood.Key)?.FoodName, snackFood.Value))
             };
         }
-
         public SnackStorage()
         {
             source = FileDataListSingleton.GetInstance();
         }
-
         public List<SnackViewModel> GetFullList()
         {
             return source.Snacks.Select(CreateModel).ToList();
         }
-
         public List<SnackViewModel> GetFilteredList(SnackBindingModel model)
         {
             if (model == null)
@@ -70,7 +62,6 @@ namespace DinerViewFileImplement.Implements
             }
             return source.Snacks.Where(recPizza => recPizza.SnackName.Contains(model.SnackName)).Select(CreateModel).ToList();
         }
-
         public SnackViewModel GetElement(SnackBindingModel model)
         {
             if (model == null)
@@ -80,14 +71,12 @@ namespace DinerViewFileImplement.Implements
             var snack = source.Snacks.FirstOrDefault(recSnack => recSnack.SnackName == model.SnackName || recSnack.Id == model.Id);
             return snack != null ? CreateModel(snack) : null;
         }
-
         public void Insert(SnackBindingModel model)
         {
             int maxId = source.Snacks.Count > 0 ? source.Snacks.Max(recSnack => recSnack.Id) : 0;
             var snack = new Snack { Id = maxId + 1, SnackFoods = new Dictionary<int, int>() };
             source.Snacks.Add(CreateModel(model, snack));
         }
-
         public void Update(SnackBindingModel model)
         {
             var snack = source.Snacks.FirstOrDefault(recSnack => recSnack.Id == model.Id);
@@ -99,7 +88,6 @@ namespace DinerViewFileImplement.Implements
 
             CreateModel(model, snack);
         }
-
         public void Delete(SnackBindingModel model)
         {
             var snack = source.Snacks.FirstOrDefault(recSnack => recSnack.Id == model.Id);

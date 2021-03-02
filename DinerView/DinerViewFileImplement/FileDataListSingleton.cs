@@ -17,9 +17,7 @@ namespace DinerViewFileImplement
         private readonly string OrderFileName = "Order.xml";
 
         public List<Food> Foods { get; set; }
-
         public List<Snack> Snacks { get; set; }
-
         public List<Order> Orders { get; set; }
 
         private FileDataListSingleton()
@@ -28,34 +26,27 @@ namespace DinerViewFileImplement
             Snacks = LoadSnacks();
             Orders = LoadOrders();
         }
-
         public static FileDataListSingleton GetInstance()
         {
             if (instance == null)
             {
                 instance = new FileDataListSingleton();
             }
-
             return instance;
         }
-
         ~FileDataListSingleton()
         {
             SaveFoods();
             SaveSnacks();
             SaveOrders();
         }
-
         private List<Food> LoadFoods()
         {
             var list = new List<Food>();
-
             if (File.Exists(FoodFileName))
             {
                 XDocument xDocument = XDocument.Load(FoodFileName);
-
                 var xElements = xDocument.Root.Elements("Food").ToList();
-
                 foreach (var food in xElements)
                 {
                     list.Add(new Food
@@ -65,29 +56,22 @@ namespace DinerViewFileImplement
                     });
                 }
             }
-
             return list;
         }
-
         private List<Snack> LoadSnacks()
         {
             var list = new List<Snack>();
-
             if (File.Exists(SnackFileName))
             {
                 XDocument xDocument = XDocument.Load(SnackFileName);
-
                 var xElements = xDocument.Root.Elements("Snack").ToList();
-
                 foreach (var snack in xElements)
                 {
                     var snackFoods = new Dictionary<int, int>();
-
                     foreach (var food in snack.Element("SnackFoods").Elements("SnackFood").ToList())
                     {
                         snackFoods.Add(Convert.ToInt32(food.Element("Key").Value), Convert.ToInt32(food.Element("Value").Value));
                     }
-
                     list.Add(new Snack
                     {
                         Id = Convert.ToInt32(snack.Attribute("Id").Value),
@@ -97,19 +81,16 @@ namespace DinerViewFileImplement
                     });
                 }
             }
-
             return list;
         }
 
         private List<Order> LoadOrders()
         {
             var list = new List<Order>();
-
             if (File.Exists(OrderFileName))
             {
                 XDocument xDocument = XDocument.Load(OrderFileName);
                 var xElements = xDocument.Root.Elements("Order").ToList();
-
                 foreach (var order in xElements)
                 {
                     OrderStatus status = 0;
@@ -148,31 +129,26 @@ namespace DinerViewFileImplement
 
             return list;
         }
-
         private void SaveFoods()
         {
             if (Foods != null)
             {
                 var xElement = new XElement("Foods");
-
                 foreach (var food in Foods)
                 {
                     xElement.Add(new XElement("Food",
                         new XAttribute("Id", food.Id),
                         new XElement("FoodName", food.FoodName)));
                 }
-
                 XDocument xDocument = new XDocument(xElement);
                 xDocument.Save(FoodFileName);
             }
         }
-
         private void SaveSnacks()
         {
             if (Snacks != null)
             {
                 var xElement = new XElement("Snacks");
-
                 foreach (var snack in Snacks)
                 {
                     var foodsElement = new XElement("SnackFoods");
@@ -183,25 +159,21 @@ namespace DinerViewFileImplement
                             new XElement("Key", food.Key),
                             new XElement("Value", food.Value)));
                     }
-
                     xElement.Add(new XElement("Snack",
                         new XAttribute("Id", snack.Id),
                         new XElement("SnackName", snack.SnackName),
                         new XElement("Price", snack.Price),
                         foodsElement));
                 }
-
                 XDocument xDocument = new XDocument(xElement);
                 xDocument.Save(SnackFileName);
             }
         }
-
         private void SaveOrders()
         {
             if (Orders != null)
             {
                 var xElement = new XElement("Orders");
-
                 foreach (var order in Orders)
                 {
                     xElement.Add(new XElement("Order",
@@ -213,7 +185,6 @@ namespace DinerViewFileImplement
                         new XElement("DateCreate", order.DateCreate.ToString()),
                         new XElement("DateImplement", order.DateImplement.ToString())));
                 }
-
                 XDocument xDocument = new XDocument(xElement);
                 xDocument.Save(OrderFileName);
             }

@@ -11,7 +11,6 @@ namespace DinerViewFileImplement.Implements
     public class FoodStorage : IFoodStorage
     {
         private readonly FileDataListSingleton sourse;
-
         private Food CreateModel(FoodBindingModel model, Food food)
         {
             food.FoodName = model.FoodName;
