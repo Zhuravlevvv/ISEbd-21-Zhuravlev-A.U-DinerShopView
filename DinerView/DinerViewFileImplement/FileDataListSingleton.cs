@@ -108,20 +108,40 @@ namespace DinerViewFileImplement
             if (File.Exists(OrderFileName))
             {
                 XDocument xDocument = XDocument.Load(OrderFileName);
-
-                var xElements = xDocument.Root.Elements("Orders").ToList();
+                var xElements = xDocument.Root.Elements("Order").ToList();
 
                 foreach (var order in xElements)
                 {
+                    OrderStatus status = 0;
+                    switch(order.Element("Status").Value)
+                    {
+                        case "Принят":
+                            status = OrderStatus.Принят;
+                            break;
+                        case "Выполняется":
+                            status = OrderStatus.Выполняется;
+                            break;
+                        case "Готов":
+                            status = OrderStatus.Готов;
+                            break;
+                        case "Оплачен":
+                            status = OrderStatus.Оплачен;
+                            break;
+                    }
+                    DateTime? date = null;
+                    if (order.Element("DateImplement").Value != "")
+                    {
+                        date = Convert.ToDateTime(order.Element("DateImplement").Value);
+                    }
                     list.Add(new Order
                     {
                         Id = Convert.ToInt32(order.Attribute("Id").Value),
                         SnackId = Convert.ToInt32(order.Element("SnackId").Value),
                         Count = Convert.ToInt32(order.Element("Count").Value),
                         Sum = Convert.ToDecimal(order.Element("Sum").Value),
-                        Status = (OrderStatus)Convert.ToInt32(order.Element("Status").Value),
+                        Status = status,
                         DateCreate = Convert.ToDateTime(order.Element("DateCreate").Value),
-                        DateImplement = !string.IsNullOrEmpty(order.Element("DateImplement").Value) ? Convert.ToDateTime(order.Element("DateImplement").Value) : (DateTime?)null
+                        DateImplement = date
                     });
                 }
             }

@@ -68,7 +68,6 @@ namespace DinerViewFileImplement.Implements
             {
                 return null;
             }
-
             return source.Snacks.Where(recPizza => recPizza.SnackName.Contains(model.SnackName)).Select(CreateModel).ToList();
         }
 
@@ -78,9 +77,7 @@ namespace DinerViewFileImplement.Implements
             {
                 return null;
             }
-
             var snack = source.Snacks.FirstOrDefault(recSnack => recSnack.SnackName == model.SnackName || recSnack.Id == model.Id);
-
             return snack != null ? CreateModel(snack) : null;
         }
 
