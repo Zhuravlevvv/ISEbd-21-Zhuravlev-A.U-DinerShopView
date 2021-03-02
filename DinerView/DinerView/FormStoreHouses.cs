@@ -3,7 +3,6 @@ using DinerBusinessLogic.BusinessLogics;
 using System;
 using System.Windows.Forms;
 using Unity;
-
 namespace DinerView
 {
     public partial class FormStoreHouses : Form
