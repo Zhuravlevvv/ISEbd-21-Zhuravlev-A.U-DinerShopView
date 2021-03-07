@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DinerBusinessLogic", "Diner
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DinerViewListImplement", "DinerViewListImplement\DinerViewListImplement.csproj", "{CCC3199A-AED5-4677-925A-EC73D7818F80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DinerViewFileImplement", "DinerViewFileImplement\DinerViewFileImplement.csproj", "{F6E43160-4F8F-4E51-9F55-CF4F96BAF8A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DinerViewFileImplement", "DinerViewFileImplement\DinerViewFileImplement.csproj", "{F6E43160-4F8F-4E51-9F55-CF4F96BAF8A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DinerViewDatabaseImplement", "DinerViewDatabaseImplement\DinerViewDatabaseImplement.csproj", "{8DE7019B-60AC-4BC2-92CF-5650A2E6D774}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{F6E43160-4F8F-4E51-9F55-CF4F96BAF8A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6E43160-4F8F-4E51-9F55-CF4F96BAF8A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6E43160-4F8F-4E51-9F55-CF4F96BAF8A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DE7019B-60AC-4BC2-92CF-5650A2E6D774}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DE7019B-60AC-4BC2-92CF-5650A2E6D774}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DE7019B-60AC-4BC2-92CF-5650A2E6D774}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DE7019B-60AC-4BC2-92CF-5650A2E6D774}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
