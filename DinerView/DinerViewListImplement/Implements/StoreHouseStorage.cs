@@ -11,12 +11,10 @@ namespace DinerViewListImplement.Implements
     public class StoreHouseStorage : IStoreHouseStorage
     {
         private readonly DataListSingleton source;
-
         public StoreHouseStorage()
         {
             source = DataListSingleton.GetInstance();
         }
-
         public List<StoreHouseViewModel> GetFullList()
         {
             List<StoreHouseViewModel> result = new List<StoreHouseViewModel>();
@@ -26,7 +24,6 @@ namespace DinerViewListImplement.Implements
             }
             return result;
         }
-
         public List<StoreHouseViewModel> GetFilteredList(StoreHouseBindingModel model)
         {
             if (model == null)
@@ -43,7 +40,6 @@ namespace DinerViewListImplement.Implements
             }
             return result;
         }
-
         public StoreHouseViewModel GetElement(StoreHouseBindingModel model)
         {
             if (model == null)
@@ -60,7 +56,6 @@ namespace DinerViewListImplement.Implements
             }
             return null;
         }
-
         public void Insert(StoreHouseBindingModel model)
         {
             StoreHouse tempStoreHouse = new StoreHouse
@@ -78,7 +73,6 @@ namespace DinerViewListImplement.Implements
             }
             source.Storehouses.Add(CreateModel(model, tempStoreHouse));
         }
-
         public void Update(StoreHouseBindingModel model)
         {
             StoreHouse tempStoreHouse = null;
@@ -95,7 +89,6 @@ namespace DinerViewListImplement.Implements
             }
             CreateModel(model, tempStoreHouse);
         }
-
         public void Delete(StoreHouseBindingModel model)
         {
             for (int i = 0; i < source.Storehouses.Count; ++i)
@@ -108,7 +101,6 @@ namespace DinerViewListImplement.Implements
             }
             throw new Exception("Элемент не найден");
         }
-
         private StoreHouse CreateModel(StoreHouseBindingModel model, StoreHouse storeHouse)
         {
             storeHouse.StoreHouseName = model.StoreHouseName;
@@ -137,12 +129,10 @@ namespace DinerViewListImplement.Implements
             }
             return storeHouse;
         }
-
         private StoreHouseViewModel CreateModel(StoreHouse storeHouse)
         {
             // требуется дополнительно получить список компонентов для изделия с названиями и их количество
             Dictionary<int, (string, int)> storeHouseFoods = new Dictionary<int, (string, int)>();
-
             foreach (var storeHouseFood in storeHouse.StoreHouseFoods)
             {
                 string foodName = string.Empty;
@@ -165,7 +155,6 @@ namespace DinerViewListImplement.Implements
                 StoreHouseFoods = storeHouseFoods
             };
         }
-
         public void Print()
         {
             foreach (StoreHouse storehouse in source.Storehouses)

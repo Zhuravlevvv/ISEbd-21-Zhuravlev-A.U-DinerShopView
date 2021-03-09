@@ -10,15 +10,12 @@ namespace DinerBusinessLogic.BusinessLogics
     public class StoreHouseLogic
     {
         private readonly IStoreHouseStorage _storeHouseStorage;
-
         private readonly IFoodStorage _foodStorage;
-
         public StoreHouseLogic(IStoreHouseStorage storeHouseStorage, IFoodStorage foodStorage)
         {
             _storeHouseStorage = storeHouseStorage;
             _foodStorage = foodStorage;
         }
-
         public List<StoreHouseViewModel> Read(StoreHouseBindingModel model)
         {
             if (model == null)
@@ -31,7 +28,6 @@ namespace DinerBusinessLogic.BusinessLogics
             }
             return _storeHouseStorage.GetFilteredList(model);
         }
-
         public void CreateOrUpdate(StoreHouseBindingModel model)
         {
             var element = _storeHouseStorage.GetElement(new StoreHouseBindingModel
@@ -51,7 +47,6 @@ namespace DinerBusinessLogic.BusinessLogics
                 _storeHouseStorage.Insert(model);
             }
         }
-
         public void Delete(StoreHouseBindingModel model)
         {
             var element = _storeHouseStorage.GetElement(new StoreHouseBindingModel
@@ -64,7 +59,6 @@ namespace DinerBusinessLogic.BusinessLogics
             }
             _storeHouseStorage.Delete(model);
         }
-
         public void Replenishment(StoreHouseReplenishmentBindingModel model)
         {
             var storeHouse = _storeHouseStorage.GetElement(new StoreHouseBindingModel

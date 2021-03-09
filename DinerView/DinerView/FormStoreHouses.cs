@@ -17,12 +17,10 @@ namespace DinerView
             InitializeComponent();
             this.logic = logic;
         }
-
         private void FormStoreHouses_Load(object sender, EventArgs e)
         {
             LoadData();
         }
-
         private void LoadData()
         {
             try
@@ -43,7 +41,6 @@ namespace DinerView
                MessageBoxIcon.Error);
             }
         }
-
         private void buttonAdd_Click(object sender, EventArgs e)
         {
             var form = Container.Resolve<FormStoreHouse>();
@@ -52,7 +49,6 @@ namespace DinerView
                 LoadData();
             }
         }
-
         private void buttonUpdate_Click(object sender, EventArgs e)
         {
             if (dataGridView.SelectedRows.Count == 1)
@@ -65,7 +61,6 @@ namespace DinerView
                 }
             }
         }
-
         private void buttonDelete_Click(object sender, EventArgs e)
         {
             if (dataGridView.SelectedRows.Count == 1)
@@ -88,7 +83,6 @@ namespace DinerView
                 }
             }
         }
-
         private void buttonRefresh_Click(object sender, EventArgs e)
         {
             LoadData();

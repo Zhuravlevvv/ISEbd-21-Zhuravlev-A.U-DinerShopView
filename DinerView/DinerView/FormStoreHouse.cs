@@ -13,21 +13,15 @@ namespace DinerView
     {
         [Dependency]
         public new IUnityContainer Container { get; set; }
-
         public int Id { set { id = value; } }
-
         private readonly StoreHouseLogic logic;
-
         private int? id;
-
         private Dictionary<int, (string, int)> storeHouseFoods;
-
         public FormStoreHouse(StoreHouseLogic storeHouselogic)
         {
             InitializeComponent();
             this.logic = storeHouselogic;
         }
-
         private void FormStoreHouse_Load(object sender, EventArgs e)
         {
             if (id.HasValue)
@@ -57,7 +51,6 @@ namespace DinerView
                 storeHouseFoods = new Dictionary<int, (string, int)>();
             }
         }
-
         private void LoadData()
         {
             try
@@ -76,9 +69,7 @@ namespace DinerView
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
                MessageBoxIcon.Error);
             }
-        }
-
-        
+        } 
         private void buttonSave_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(textBoxName.Text))
@@ -113,7 +104,6 @@ namespace DinerView
                MessageBoxIcon.Error);
             }
         }
-
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;

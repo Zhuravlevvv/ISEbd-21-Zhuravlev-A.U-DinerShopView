@@ -12,19 +12,16 @@ namespace DinerView
     {
         [Dependency]
         public new IUnityContainer Container { get; set; }
-
         public int ComponentId
         {
             get { return Convert.ToInt32(comboBoxFood.SelectedValue); }
             set { comboBoxFood.SelectedValue = value; }
         }
-
         public int StoreHouse
         {
             get { return Convert.ToInt32(comboBoxFood.SelectedValue); }
             set { comboBoxFood.SelectedValue = value; }
         }
-
         public int Count
         {
             get { return Convert.ToInt32(textBoxCount.Text); }
@@ -33,14 +30,11 @@ namespace DinerView
                 textBoxCount.Text = value.ToString();
             }
         }
-
         private readonly StoreHouseLogic storeHouseLogic;
-
         public FormReplenishmentStoreHouse(FoodLogic logicFood, StoreHouseLogic logicStoreHouse )
         {
             InitializeComponent();
             storeHouseLogic = logicStoreHouse;
-
             List<FoodViewModel> listFoods = logicFood.Read(null);
             if (listFoods != null)
             {
@@ -49,7 +43,6 @@ namespace DinerView
                 comboBoxFood.DataSource = listFoods;
                 comboBoxFood.SelectedItem = null;
             }
-
             List<StoreHouseViewModel> listStoreHouses = logicStoreHouse.Read(null);
             if (listStoreHouses != null)
             {
@@ -59,7 +52,6 @@ namespace DinerView
                 comboBoxStoreHouse.SelectedItem = null;
             }
         }
-
         private void buttonSave_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(textBoxCount.Text))
@@ -80,18 +72,15 @@ namespace DinerView
                MessageBoxIcon.Error);
                 return;
             }
-
             storeHouseLogic.Replenishment(new StoreHouseReplenishmentBindingModel
             {
                 FoodId = Convert.ToInt32(comboBoxFood.SelectedValue),
                 StoreHouseId = Convert.ToInt32(comboBoxStoreHouse.SelectedValue),
                 Count = Convert.ToInt32(textBoxCount.Text)
             });
-
             DialogResult = DialogResult.OK;
             Close();
         }
-
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
