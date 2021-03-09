@@ -23,7 +23,6 @@ namespace DinerViewDatabaseImplement.Implements
                 .ToList();
             }
         }
-
         public List<FoodViewModel> GetFilteredList(FoodBindingModel model)
         {
             if (model == null)
@@ -42,7 +41,6 @@ namespace DinerViewDatabaseImplement.Implements
                 .ToList();
             }
         }
-
         public FoodViewModel GetElement(FoodBindingModel model)
         {
             if (model == null)
@@ -51,19 +49,18 @@ namespace DinerViewDatabaseImplement.Implements
             }
             using (var context = new DinerViewDatabase())
             {
-                var component = context.Foods
+                var food = context.Foods
                 .FirstOrDefault(rec => rec.FoodName == model.FoodName ||
                 rec.Id == model.Id);
-                return component != null ?
+                return food != null ?
                 new FoodViewModel
                 {
-                    Id = component.Id,
-                    FoodName = component.FoodName
+                    Id = food.Id,
+                    FoodName = food.FoodName
                 } :
                 null;
             }
         }
-
         public void Insert(FoodBindingModel model)
         {
             using (var context = new DinerViewDatabase())
@@ -72,7 +69,6 @@ namespace DinerViewDatabaseImplement.Implements
                 context.SaveChanges();
             }
         }
-
         public void Update(FoodBindingModel model)
         {
             using (var context = new DinerViewDatabase())
@@ -105,7 +101,6 @@ namespace DinerViewDatabaseImplement.Implements
                 }
             }
         }
-
         private Food CreateModel(FoodBindingModel model, Food food)
         {
             food.FoodName = model.FoodName;

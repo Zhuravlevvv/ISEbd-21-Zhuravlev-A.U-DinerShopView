@@ -31,7 +31,6 @@ namespace DinerViewDatabaseImplement.Implements
                 .ToList();
             }
         }
-
         public List<SnackViewModel> GetFilteredList(SnackBindingModel model)
         {
             if (model == null)
@@ -57,7 +56,6 @@ namespace DinerViewDatabaseImplement.Implements
                 .ToList();
             }
         }
-
         public SnackViewModel GetElement(SnackBindingModel model)
         {
             if (model == null)
@@ -83,7 +81,6 @@ namespace DinerViewDatabaseImplement.Implements
                 } : null;
             }
         }
-
         public void Insert(SnackBindingModel model)
         {
             using (var context = new DinerViewDatabase())
@@ -107,7 +104,6 @@ namespace DinerViewDatabaseImplement.Implements
                 }
             }
         }
-
         public void Update(SnackBindingModel model)
         {
             using (var context = new DinerViewDatabase())
@@ -134,7 +130,6 @@ namespace DinerViewDatabaseImplement.Implements
                 }
             }
         }
-
         public void Delete(SnackBindingModel model)
         {
             using (var context = new DinerViewDatabase())
@@ -152,14 +147,12 @@ namespace DinerViewDatabaseImplement.Implements
                 }
             }
         }
-
         private Snack CreateModel(SnackBindingModel model, Snack snack)
         {
             snack.SnackName = model.SnackName;
             snack.Price = model.Price;
             return snack;
         }
-
         private Snack CreateModel(SnackBindingModel model, Snack snack,
         DinerViewDatabase context)
         {

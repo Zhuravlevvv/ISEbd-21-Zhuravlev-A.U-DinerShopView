@@ -29,7 +29,6 @@ namespace DinerViewDatabaseImplement.Implements
                 .ToList();
             }
         }
-
         public List<OrderViewModel> GetFilteredList(OrderBindingModel model)
         {
             if (model == null)
@@ -54,7 +53,6 @@ namespace DinerViewDatabaseImplement.Implements
                 .ToList();
             }
         }
-
         public OrderViewModel GetElement(OrderBindingModel model)
         {
             if (model == null)
@@ -80,7 +78,6 @@ namespace DinerViewDatabaseImplement.Implements
                 null;
             }
         }
-
         public void Insert(OrderBindingModel model)
         {
             using (var context = new DinerViewDatabase())
@@ -89,7 +86,6 @@ namespace DinerViewDatabaseImplement.Implements
                 context.SaveChanges();
             }
         }
-
         public void Update(OrderBindingModel model)
         {
             using (var context = new DinerViewDatabase())
@@ -104,7 +100,6 @@ namespace DinerViewDatabaseImplement.Implements
                 context.SaveChanges();
             }
         }
-
         public void Delete(OrderBindingModel model)
         {
             using (var context = new DinerViewDatabase())
@@ -122,7 +117,6 @@ namespace DinerViewDatabaseImplement.Implements
                 }
             }
         }
-
         private Order CreateModel(OrderBindingModel model, Order order)
         {
             order.SnackId = model.SnackId;
