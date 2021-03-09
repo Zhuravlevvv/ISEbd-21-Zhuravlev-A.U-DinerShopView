@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using DinerBusinessLogic.BindingModels;
+using System.Text;
 using DinerBusinessLogic.Interfaces;
 using DinerBusinessLogic.ViewModels;
+using DinerBusinessLogic.BindingModels;
+using System.Linq;
 using DinerViewDatabaseImplement.Models;
 
 namespace DinerViewDatabaseImplement.Implements
