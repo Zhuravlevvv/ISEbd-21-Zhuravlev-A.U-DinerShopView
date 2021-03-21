@@ -94,17 +94,17 @@ namespace DinerViewFileImplement.Implements
                 }
             }
             // обновляем существуюущие и добавляем новые
-            foreach (var component in model.StoreHouseFoods)
+            foreach (var food in model.StoreHouseFoods)
             {
-                if (storeHouse.StoreHouseFoods.ContainsKey(component.Key))
+                if (storeHouse.StoreHouseFoods.ContainsKey(food.Key))
                 {
-                    storeHouse.StoreHouseFoods[component.Key] =
-                    model.StoreHouseFoods[component.Key].Item2;
+                    storeHouse.StoreHouseFoods[food.Key] =
+                    model.StoreHouseFoods[food.Key].Item2;
                 }
                 else
                 {
-                    storeHouse.StoreHouseFoods.Add(component.Key,
-                    model.StoreHouseFoods[component.Key].Item2);
+                    storeHouse.StoreHouseFoods.Add(food.Key,
+                    model.StoreHouseFoods[food.Key].Item2);
                 }
             }
             return storeHouse;
@@ -118,11 +118,11 @@ namespace DinerViewFileImplement.Implements
             foreach (var storeHouseFood in storeHouse.StoreHouseFoods)
             {
                 string foodName = string.Empty;
-                foreach (var component in source.Foods)
+                foreach (var food in source.Foods)
                 {
-                    if (storeHouseFood.Key == component.Id)
+                    if (storeHouseFood.Key == food.Id)
                     {
-                        foodName = component.FoodName;
+                        foodName = food.FoodName;
                         break;
                     }
                 }
@@ -138,36 +138,36 @@ namespace DinerViewFileImplement.Implements
             };
         }
 
-        public bool CheckAndTake(int count, Dictionary<int, (string, int)> components)
+        public bool CheckAndTake(int count, Dictionary<int, (string, int)> foods)
         {
-            foreach (var component in components)
+            foreach (var food in foods)
             {
-                int requiredCount = component.Value.Item2 * count;
+                int requiredCount = food.Value.Item2 * count;
                 int availableCount = source.StoreHouses
-                    .Where(rec => rec.StoreHouseFoods.ContainsKey(component.Key))
-                    .Sum(rec => rec.StoreHouseFoods[component.Key]);
+                    .Where(rec => rec.StoreHouseFoods.ContainsKey(food.Key))
+                    .Sum(rec => rec.StoreHouseFoods[food.Key]);
                 if (availableCount < requiredCount)
                 {
                     return false;
                 }
             }
-            foreach (var component in components)
+            foreach (var food in foods)
             {
-                int requiredCount = component.Value.Item2 * count;
+                int requiredCount = food.Value.Item2 * count;
                 List<StoreHouse> availableStoreHouses = source.StoreHouses
-                    .Where(rec => rec.StoreHouseFoods.ContainsKey(component.Key))
+                    .Where(rec => rec.StoreHouseFoods.ContainsKey(food.Key))
                     .ToList();
                 foreach (var storeHouse in availableStoreHouses)
                 {
-                    int availableCount = storeHouse.StoreHouseFoods[component.Key];
+                    int availableCount = storeHouse.StoreHouseFoods[food.Key];
                     if (availableCount <= requiredCount)
                     {
                         requiredCount = requiredCount - availableCount;
-                        storeHouse.StoreHouseFoods.Remove(component.Key);
+                        storeHouse.StoreHouseFoods.Remove(food.Key);
                     }
                     else
                     {
-                        storeHouse.StoreHouseFoods[component.Key] -= requiredCount;
+                        storeHouse.StoreHouseFoods[food.Key] -= requiredCount;
                         requiredCount = 0;
                     }
                     if (requiredCount == 0)

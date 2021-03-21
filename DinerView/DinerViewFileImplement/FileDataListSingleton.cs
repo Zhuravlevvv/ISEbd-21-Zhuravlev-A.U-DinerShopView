@@ -76,18 +76,18 @@ namespace DinerViewFileImplement
 
                 foreach (var elem in xElements)
                 {
-                    var prodComp = new Dictionary<int, int>();
-                    foreach (var component in elem.Element("SnackFoods").Elements("SnackFood").ToList())
+                    var snackFood = new Dictionary<int, int>();
+                    foreach (var food in elem.Element("SnackFoods").Elements("SnackFood").ToList())
                     {
-                        prodComp.Add(Convert.ToInt32(component.Element("Key").Value),
-                            Convert.ToInt32(component.Element("Value").Value));
+                        snackFood.Add(Convert.ToInt32(food.Element("Key").Value),
+                            Convert.ToInt32(food.Element("Value").Value));
                     }
                     list.Add(new Snack
                     {
                         Id = Convert.ToInt32(elem.Attribute("Id").Value),
                         SnackName = elem.Element("SnackName").Value,
                         Price = Convert.ToDecimal(elem.Element("Price").Value),
-                        SnackFoods = prodComp
+                        SnackFoods = snackFood
                     });
                 }
             }
@@ -149,12 +149,12 @@ namespace DinerViewFileImplement
                 var xElements = xDocument.Root.Elements("StoreHouse").ToList();
                 foreach (var elem in xElements)
                 {
-                    var warComp = new Dictionary<int, int>();
-                    foreach (var component in
+                    var storeFood = new Dictionary<int, int>();
+                    foreach (var food in
                     elem.Element("StoreHouseFoods").Elements("StoreHouseFood").ToList())
                     {
-                        warComp.Add(Convert.ToInt32(component.Element("Key").Value),
-                        Convert.ToInt32(component.Element("Value").Value));
+                        storeFood.Add(Convert.ToInt32(food.Element("Key").Value),
+                        Convert.ToInt32(food.Element("Value").Value));
                     }
                     list.Add(new StoreHouse
                     {
@@ -162,7 +162,7 @@ namespace DinerViewFileImplement
                         StoreHouseName = elem.Element("StoreHouseName").Value,
                         ResponsiblePersonFCS = elem.Element("ResponsiblePersonFCS").Value,
                         DateCreate = Convert.ToDateTime(elem.Element("DateCreate").Value),
-                        StoreHouseFoods = warComp
+                        StoreHouseFoods = storeFood
                     });
                 }
             }
@@ -174,11 +174,11 @@ namespace DinerViewFileImplement
             if (Foods != null)
             {
                 var xElement = new XElement("Foods");
-                foreach (var component in Foods)
+                foreach (var food in Foods)
                 {
                     xElement.Add(new XElement("Food",
-                    new XAttribute("Id", component.Id),
-                    new XElement("FoodName", component.FoodName)));
+                    new XAttribute("Id", food.Id),
+                    new XElement("FoodName", food.FoodName)));
                 }
                 XDocument xDocument = new XDocument(xElement);
                 xDocument.Save(FoodFileName);
@@ -189,20 +189,20 @@ namespace DinerViewFileImplement
             if (StoreHouses != null)
             {
                 var xElement = new XElement("StoreHouses");
-                foreach (var warehouse in StoreHouses)
+                foreach (var storehouse in StoreHouses)
                 {
                     var compElement = new XElement("StoreHouseFoods");
-                    foreach (var component in warehouse.StoreHouseFoods)
+                    foreach (var food in storehouse.StoreHouseFoods)
                     {
                         compElement.Add(new XElement("StoreHoseFoods",
-                        new XElement("Key", component.Key),
-                        new XElement("Value", component.Value)));
+                        new XElement("Key", food.Key),
+                        new XElement("Value", food.Value)));
                     }
                     xElement.Add(new XElement("StoreHouse",
-                    new XAttribute("Id", warehouse.Id),
-                    new XElement("StoreHouseName", warehouse.StoreHouseName),
-                    new XElement("ResponsiblePersonFCS", warehouse.ResponsiblePersonFCS),
-                    new XElement("DateCreate", warehouse.DateCreate),
+                    new XAttribute("Id", storehouse.Id),
+                    new XElement("StoreHouseName", storehouse.StoreHouseName),
+                    new XElement("ResponsiblePersonFCS", storehouse.ResponsiblePersonFCS),
+                    new XElement("DateCreate", storehouse.DateCreate),
                     compElement));
                 }
                 XDocument xDocument = new XDocument(xElement);
@@ -214,20 +214,20 @@ namespace DinerViewFileImplement
             if (Snacks != null)
             {
                 var xElement = new XElement("Snacks");
-                foreach (var package in Snacks)
+                foreach (var snack in Snacks)
                 {
-                    var compElement = new XElement("SnackFoods");
-                    foreach (var component in package.SnackFoods)
+                    var foodElement = new XElement("SnackFoods");
+                    foreach (var food in snack.SnackFoods)
                     {
-                        compElement.Add(new XElement("SnackFood",
-                        new XElement("Key", component.Key),
-                        new XElement("Value", component.Value)));
+                        foodElement.Add(new XElement("SnackFood",
+                        new XElement("Key", food.Key),
+                        new XElement("Value", food.Value)));
                     }
                     xElement.Add(new XElement("Package",
-                    new XAttribute("Id", package.Id),
-                    new XElement("SnackName", package.SnackName),
-                    new XElement("Price", package.Price),
-                    compElement));
+                    new XAttribute("Id", snack.Id),
+                    new XElement("SnackName", snack.SnackName),
+                    new XElement("Price", snack.Price),
+                    foodElement));
                 }
                 XDocument xDocument = new XDocument(xElement);
                 xDocument.Save(SnackFileName);

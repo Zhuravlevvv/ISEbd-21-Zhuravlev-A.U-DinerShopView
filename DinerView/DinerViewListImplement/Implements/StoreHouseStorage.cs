@@ -167,7 +167,7 @@ namespace DinerViewListImplement.Implements
                 }
             }
         }
-        public bool CheckAndTake(int count, Dictionary<int, (string, int)> components)
+        public bool CheckAndTake(int count, Dictionary<int, (string, int)> foods)
         {
             throw new NotImplementedException();
         }

@@ -14,6 +14,6 @@ namespace DinerBusinessLogic.Interfaces
         void Insert(StoreHouseBindingModel model);
         void Update(StoreHouseBindingModel model);
         void Delete(StoreHouseBindingModel model);
-        bool CheckAndTake(int count, Dictionary<int, (string, int)> components);
+        bool CheckAndTake(int count, Dictionary<int, (string, int)> foods);
     }
 }
