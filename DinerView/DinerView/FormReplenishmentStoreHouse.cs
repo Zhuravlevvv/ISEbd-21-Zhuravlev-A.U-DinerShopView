@@ -12,7 +12,7 @@ namespace DinerView
     {
         [Dependency]
         public new IUnityContainer Container { get; set; }
-        public int ComponentId
+        public int FoodId
         {
             get { return Convert.ToInt32(comboBoxFood.SelectedValue); }
             set { comboBoxFood.SelectedValue = value; }
