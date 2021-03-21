@@ -13,6 +13,6 @@ namespace DinerViewFileImplement.Models
 
         public DateTime DateCreate { get; set; }
 
-        public Dictionary<int, int> StoreHouseComponents { get; set; }
+        public Dictionary<int, int> StoreHouseFoods{ get; set; }
     }
 }

@@ -53,7 +53,7 @@ namespace DinerViewFileImplement.Implements
             var storeHouse = new StoreHouse
             {
                 Id = maxId + 1,
-                StoreHouseComponents = new Dictionary<int, int>(),
+                StoreHouseFoods = new Dictionary<int, int>(),
                 DateCreate = DateTime.Now
             };
             source.StoreHouses.Add(CreateModel(model, storeHouse));
@@ -86,24 +86,24 @@ namespace DinerViewFileImplement.Implements
             storeHouse.StoreHouseName = model.StoreHouseName;
             storeHouse.ResponsiblePersonFCS = model.ResponsiblePersonFCS;
             // удаляем убранные
-            foreach (var key in storeHouse.StoreHouseComponents.Keys.ToList())
+            foreach (var key in storeHouse.StoreHouseFoods.Keys.ToList())
             {
                 if (!model.StoreHouseFoods.ContainsKey(key))
                 {
-                    storeHouse.StoreHouseComponents.Remove(key);
+                    storeHouse.StoreHouseFoods.Remove(key);
                 }
             }
             // обновляем существуюущие и добавляем новые
             foreach (var component in model.StoreHouseFoods)
             {
-                if (storeHouse.StoreHouseComponents.ContainsKey(component.Key))
+                if (storeHouse.StoreHouseFoods.ContainsKey(component.Key))
                 {
-                    storeHouse.StoreHouseComponents[component.Key] =
+                    storeHouse.StoreHouseFoods[component.Key] =
                     model.StoreHouseFoods[component.Key].Item2;
                 }
                 else
                 {
-                    storeHouse.StoreHouseComponents.Add(component.Key,
+                    storeHouse.StoreHouseFoods.Add(component.Key,
                     model.StoreHouseFoods[component.Key].Item2);
                 }
             }
@@ -113,20 +113,20 @@ namespace DinerViewFileImplement.Implements
         private StoreHouseViewModel CreateModel(StoreHouse storeHouse)
         {
             // требуется дополнительно получить список компонентов для изделия с названиями и их количество
-            Dictionary<int, (string, int)> storeHouseComponents = new Dictionary<int, (string, int)>();
+            Dictionary<int, (string, int)> storeHouseFoods = new Dictionary<int, (string, int)>();
 
-            foreach (var storeHouseComponent in storeHouse.StoreHouseComponents)
+            foreach (var storeHouseFood in storeHouse.StoreHouseFoods)
             {
-                string componentName = string.Empty;
+                string foodName = string.Empty;
                 foreach (var component in source.Foods)
                 {
-                    if (storeHouseComponent.Key == component.Id)
+                    if (storeHouseFood.Key == component.Id)
                     {
-                        componentName = component.FoodName;
+                        foodName = component.FoodName;
                         break;
                     }
                 }
-                storeHouseComponents.Add(storeHouseComponent.Key, (componentName, storeHouseComponent.Value));
+                storeHouseFoods.Add(storeHouseFood.Key, (foodName, storeHouseFood.Value));
             }
             return new StoreHouseViewModel
             {
@@ -134,7 +134,7 @@ namespace DinerViewFileImplement.Implements
                 StoreHouseName = storeHouse.StoreHouseName,
                 ResponsiblePersonFCS = storeHouse.ResponsiblePersonFCS,
                 DateCreate = storeHouse.DateCreate,
-                StoreHouseFoods = storeHouseComponents
+                StoreHouseFoods = storeHouseFoods
             };
         }
 
@@ -144,8 +144,8 @@ namespace DinerViewFileImplement.Implements
             {
                 int requiredCount = component.Value.Item2 * count;
                 int availableCount = source.StoreHouses
-                    .Where(rec => rec.StoreHouseComponents.ContainsKey(component.Key))
-                    .Sum(rec => rec.StoreHouseComponents[component.Key]);
+                    .Where(rec => rec.StoreHouseFoods.ContainsKey(component.Key))
+                    .Sum(rec => rec.StoreHouseFoods[component.Key]);
                 if (availableCount < requiredCount)
                 {
                     return false;
@@ -155,19 +155,19 @@ namespace DinerViewFileImplement.Implements
             {
                 int requiredCount = component.Value.Item2 * count;
                 List<StoreHouse> availableStoreHouses = source.StoreHouses
-                    .Where(rec => rec.StoreHouseComponents.ContainsKey(component.Key))
+                    .Where(rec => rec.StoreHouseFoods.ContainsKey(component.Key))
                     .ToList();
                 foreach (var storeHouse in availableStoreHouses)
                 {
-                    int availableCount = storeHouse.StoreHouseComponents[component.Key];
+                    int availableCount = storeHouse.StoreHouseFoods[component.Key];
                     if (availableCount <= requiredCount)
                     {
                         requiredCount = requiredCount - availableCount;
-                        storeHouse.StoreHouseComponents.Remove(component.Key);
+                        storeHouse.StoreHouseFoods.Remove(component.Key);
                     }
                     else
                     {
-                        storeHouse.StoreHouseComponents[component.Key] -= requiredCount;
+                        storeHouse.StoreHouseFoods[component.Key] -= requiredCount;
                         requiredCount = 0;
                     }
                     if (requiredCount == 0)

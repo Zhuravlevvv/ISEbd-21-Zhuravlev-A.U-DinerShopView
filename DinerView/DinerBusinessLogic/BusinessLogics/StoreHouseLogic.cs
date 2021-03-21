@@ -76,7 +76,7 @@ namespace DinerBusinessLogic.BusinessLogics
             }
             if (food == null)
             {
-                throw new Exception("Не найден компонент");
+                throw new Exception("Не найден продукт");
             }
             if (storeHouse.StoreHouseFoods.ContainsKey(model.FoodId))
             {
