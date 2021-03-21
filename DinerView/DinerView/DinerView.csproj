@@ -175,6 +175,10 @@
       <Project>{89a2cb93-3bf1-4ae5-8f47-ea1a16404293}</Project>
       <Name>DinerBusinessLogic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DinerViewFileImplement\DinerViewFileImplement.csproj">
+      <Project>{f6e43160-4f8f-4e51-9f55-cf4f96baf8a7}</Project>
+      <Name>DinerViewFileImplement</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DinerViewListImplement\DinerViewListImplement.csproj">
       <Project>{ccc3199a-aed5-4677-925a-ec73d7818f80}</Project>
       <Name>DinerViewListImplement</Name>
