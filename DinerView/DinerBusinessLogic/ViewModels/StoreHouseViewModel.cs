@@ -14,6 +14,6 @@ namespace DinerBusinessLogic.ViewModels
         public string ResponsiblePersonFCS { get; set; }
         [DisplayName("Дата создания")]
         public DateTime DateCreate { get; set; }
-        public Dictionary<int, (string, int)> StoreHouseFoods { get; set; }
+        public Dictionary<int, (string, int)> StoreHouseFoods;
     }
 }

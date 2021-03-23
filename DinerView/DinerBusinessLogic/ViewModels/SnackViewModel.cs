@@ -12,6 +12,5 @@ namespace DinerBusinessLogic.ViewModels
         [DisplayName("Цена")]
         public decimal Price { get; set; }
         public Dictionary<int, (string, int)> SnackFoods { get; set; }
-        
     }
 }
