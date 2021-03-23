@@ -34,7 +34,7 @@ namespace DinerView
                         {
                             dataGridView.Rows.Add(new object[] { "", listElem.Item1, listElem.Item2 });
                         }
-                        dataGridView.Rows.Add(new object[] { "Итого", "", elem.TotalCount });
+                        dataGridView.Rows.Add(new object[] { "Итого", "", elem.TotalCount});
                         dataGridView.Rows.Add(new object[] { });
                     }
                 }

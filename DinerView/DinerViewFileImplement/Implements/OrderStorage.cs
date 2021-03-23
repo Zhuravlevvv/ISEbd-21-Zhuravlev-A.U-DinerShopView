@@ -50,8 +50,14 @@ namespace DinerViewFileImplement.Implements
             {
                 return null;
             }
-
-            return sourse.Orders.Where(recOrder => recOrder.Id == model.Id).Select(CreateModel).ToList();
+            if (model.DateTo != null && model.DateFrom != null)
+            {
+                return sourse.Orders.Where(rec => rec.DateCreate >= model.DateFrom && rec.DateCreate <= model.DateTo)
+                    .Select(CreateModel).ToList();
+            }
+            return sourse.Orders
+                .Where(rec => rec.SnackId.ToString().Contains(model.SnackId.ToString()))
+                .Select(CreateModel).ToList();
         }
         public OrderViewModel GetElement(OrderBindingModel model)
         {

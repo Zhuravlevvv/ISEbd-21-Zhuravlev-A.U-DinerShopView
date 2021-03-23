@@ -24,7 +24,7 @@ namespace DinerView
 
         private void buttonMake_Click(object sender, EventArgs e)
         {
-            if (dateTimePickerForm.Value.Date >= dateTimePickerTo.Value.Date)
+            if (dateTimePickerFrom.Value.Date >= dateTimePickerTo.Value.Date)
             {
                 MessageBox.Show("Дата начала должна быть меньше даты окончания",
                 "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -33,12 +33,12 @@ namespace DinerView
             try
             {
                 ReportParameter parameter = new ReportParameter("ReportParameterPeriod", "c " +
-                dateTimePickerForm.Value.ToShortDateString() + " по " +
+                dateTimePickerFrom.Value.ToShortDateString() + " по " +
                 dateTimePickerTo.Value.ToShortDateString());
                 reportViewer.LocalReport.SetParameters(parameter);
                 var dataSource = logic.GetOrders(new ReportBindingModel
                 {
-                    DateFrom = dateTimePickerForm.Value,
+                    DateFrom = dateTimePickerFrom.Value,
                     DateTo = dateTimePickerTo.Value
                 });
                 ReportDataSource source = new ReportDataSource("DataSetOrders",
@@ -61,7 +61,7 @@ namespace DinerView
 
         private void buttonToPdf_Click(object sender, EventArgs e)
         {
-            if (dateTimePickerForm.Value.Date >= dateTimePickerTo.Value.Date)
+            if (dateTimePickerFrom.Value.Date >= dateTimePickerTo.Value.Date)
             {
                 MessageBox.Show("Дата начала должна быть меньше даты окончания",
                 "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -76,7 +76,7 @@ namespace DinerView
                         logic.SaveOrdersToPdfFile(new ReportBindingModel
                         {
                             FileName = dialog.FileName,
-                            DateFrom = dateTimePickerForm.Value,
+                            DateFrom = dateTimePickerFrom.Value,
                             DateTo = dateTimePickerTo.Value
                         });
                         MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK,

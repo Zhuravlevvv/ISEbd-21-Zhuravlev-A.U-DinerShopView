@@ -43,9 +43,9 @@
             this.Column1,
             this.Column2,
             this.Column3});
-            this.dataGridView.Location = new System.Drawing.Point(1, 42);
+            this.dataGridView.Location = new System.Drawing.Point(-2, 42);
             this.dataGridView.Name = "dataGridView";
-            this.dataGridView.Size = new System.Drawing.Size(565, 408);
+            this.dataGridView.Size = new System.Drawing.Size(547, 408);
             this.dataGridView.TabIndex = 0;
             // 
             // buttonSaveToExcel
@@ -81,7 +81,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(569, 450);
+            this.ClientSize = new System.Drawing.Size(548, 450);
             this.Controls.Add(this.buttonSaveToExcel);
             this.Controls.Add(this.dataGridView);
             this.Name = "FormReportFoodSnack";

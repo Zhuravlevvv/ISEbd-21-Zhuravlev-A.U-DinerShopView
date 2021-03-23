@@ -55,9 +55,20 @@ namespace DinerViewListImplement.Implements
                 return null;
             }
             List<OrderViewModel> result = new List<OrderViewModel>();
+            if (model.DateTo != null && model.DateFrom != null)
+            {
+                foreach (var order in source.Orders)
+                {
+                    if (order.DateCreate >= model.DateTo && order.DateCreate <= model.DateFrom)
+                    {
+                        result.Add(CreateModel(order));
+                    }
+                }
+                return result;
+            }
             foreach (var order in source.Orders)
             {
-                if (order.SnackId == model.SnackId)
+                if (order.SnackId.ToString().Contains(model.SnackId.ToString()))
                 {
                     result.Add(CreateModel(order));
                 }

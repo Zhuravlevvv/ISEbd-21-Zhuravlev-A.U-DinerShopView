@@ -28,42 +28,42 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dateTimePickerForm = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePickerFrom = new System.Windows.Forms.DateTimePicker();
             this.dateTimePickerTo = new System.Windows.Forms.DateTimePicker();
             this.buttonMake = new System.Windows.Forms.Button();
             this.buttonToPdf = new System.Windows.Forms.Button();
             this.reportViewer = new Microsoft.Reporting.WinForms.ReportViewer();
             this.SuspendLayout();
             // 
-            // dateTimePickerForm
+            // dateTimePickerFrom
             // 
-            this.dateTimePickerForm.Location = new System.Drawing.Point(12, 166);
-            this.dateTimePickerForm.Name = "dateTimePickerForm";
-            this.dateTimePickerForm.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePickerForm.TabIndex = 0;
+            this.dateTimePickerFrom.Location = new System.Drawing.Point(12, 12);
+            this.dateTimePickerFrom.Name = "dateTimePickerFrom";
+            this.dateTimePickerFrom.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePickerFrom.TabIndex = 0;
             // 
             // dateTimePickerTo
             // 
-            this.dateTimePickerTo.Location = new System.Drawing.Point(12, 192);
+            this.dateTimePickerTo.Location = new System.Drawing.Point(218, 12);
             this.dateTimePickerTo.Name = "dateTimePickerTo";
             this.dateTimePickerTo.Size = new System.Drawing.Size(200, 20);
             this.dateTimePickerTo.TabIndex = 1;
             // 
             // buttonMake
             // 
-            this.buttonMake.Location = new System.Drawing.Point(294, 163);
+            this.buttonMake.Location = new System.Drawing.Point(424, 12);
             this.buttonMake.Name = "buttonMake";
-            this.buttonMake.Size = new System.Drawing.Size(416, 23);
+            this.buttonMake.Size = new System.Drawing.Size(106, 23);
             this.buttonMake.TabIndex = 2;
-            this.buttonMake.Text = "Сделать";
+            this.buttonMake.Text = "Сформировать";
             this.buttonMake.UseVisualStyleBackColor = true;
             this.buttonMake.Click += new System.EventHandler(this.buttonMake_Click);
             // 
             // buttonToPdf
             // 
-            this.buttonToPdf.Location = new System.Drawing.Point(294, 192);
+            this.buttonToPdf.Location = new System.Drawing.Point(550, 12);
             this.buttonToPdf.Name = "buttonToPdf";
-            this.buttonToPdf.Size = new System.Drawing.Size(416, 23);
+            this.buttonToPdf.Size = new System.Drawing.Size(160, 23);
             this.buttonToPdf.TabIndex = 3;
             this.buttonToPdf.Text = "В PDF";
             this.buttonToPdf.UseVisualStyleBackColor = true;
@@ -71,10 +71,11 @@
             // 
             // reportViewer
             // 
-            this.reportViewer.Location = new System.Drawing.Point(0, -1);
+            this.reportViewer.LocalReport.ReportEmbeddedResource = "DinerView.Report.rdlc";
+            this.reportViewer.Location = new System.Drawing.Point(0, 38);
             this.reportViewer.Name = "reportViewer";
             this.reportViewer.ServerReport.BearerToken = null;
-            this.reportViewer.Size = new System.Drawing.Size(723, 158);
+            this.reportViewer.Size = new System.Drawing.Size(723, 292);
             this.reportViewer.TabIndex = 4;
             // 
             // FormReportOrders
@@ -86,7 +87,7 @@
             this.Controls.Add(this.buttonToPdf);
             this.Controls.Add(this.buttonMake);
             this.Controls.Add(this.dateTimePickerTo);
-            this.Controls.Add(this.dateTimePickerForm);
+            this.Controls.Add(this.dateTimePickerFrom);
             this.Name = "FormReportOrders";
             this.Text = "Список заказов";
             this.Load += new System.EventHandler(this.FormReportOrders_Load);
@@ -96,7 +97,7 @@
 
         #endregion
 
-        private System.Windows.Forms.DateTimePicker dateTimePickerForm;
+        private System.Windows.Forms.DateTimePicker dateTimePickerFrom;
         private System.Windows.Forms.DateTimePicker dateTimePickerTo;
         private System.Windows.Forms.Button buttonMake;
         private System.Windows.Forms.Button buttonToPdf;
