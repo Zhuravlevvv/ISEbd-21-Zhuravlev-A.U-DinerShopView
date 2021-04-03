@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DinerViewDatabaseImplement.Migrations
 {
     [DbContext(typeof(DinerViewDatabase))]
-    [Migration("20210309071851_InitialCreate")]
+    [Migration("20210403113506_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -113,6 +113,54 @@ namespace DinerViewDatabaseImplement.Migrations
                     b.ToTable("SnackFoods");
                 });
 
+            modelBuilder.Entity("DinerViewDatabaseImplement.Models.StoreHouse", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ResponsiblePersonFCS")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StoreHouseName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StoreHouses");
+                });
+
+            modelBuilder.Entity("DinerViewDatabaseImplement.Models.StoreHouseFood", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FoodId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StoreHouseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FoodId");
+
+                    b.HasIndex("StoreHouseId");
+
+                    b.ToTable("StoreHouseFoods");
+                });
+
             modelBuilder.Entity("DinerViewDatabaseImplement.Models.Order", b =>
                 {
                     b.HasOne("DinerViewDatabaseImplement.Models.Snack", "Snack")
@@ -133,6 +181,21 @@ namespace DinerViewDatabaseImplement.Migrations
                     b.HasOne("DinerViewDatabaseImplement.Models.Snack", "Snack")
                         .WithMany("SnackFoods")
                         .HasForeignKey("SnackId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DinerViewDatabaseImplement.Models.StoreHouseFood", b =>
+                {
+                    b.HasOne("DinerViewDatabaseImplement.Models.Food", "Food")
+                        .WithMany("StoreHouseFoods")
+                        .HasForeignKey("FoodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DinerViewDatabaseImplement.Models.StoreHouse", "StoreHouse")
+                        .WithMany("StoreHouseFoods")
+                        .HasForeignKey("StoreHouseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

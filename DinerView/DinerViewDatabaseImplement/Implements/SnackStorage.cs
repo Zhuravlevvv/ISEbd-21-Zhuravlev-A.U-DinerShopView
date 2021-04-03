@@ -11,76 +11,130 @@ namespace DinerViewDatabaseImplement.Implements
 {
     public class SnackStorage : ISnackStorage
     {
+        private Snack CreateModel(SnackBindingModel model, Snack snack, DinerViewDatabase context)
+        {
+            snack.SnackName = model.SnackName;
+            snack.Price = model.Price;
+            if (snack.Id == 0)
+            {
+                context.Snacks.Add(snack);
+                context.SaveChanges();
+            }
+
+            if (model.Id.HasValue)
+            {
+                var SnackFoods = context.SnackFoods
+                    .Where(rec => rec.SnackId == model.Id.Value)
+                    .ToList();
+
+                context.SnackFoods.RemoveRange(SnackFoods
+                    .Where(rec => !model.SnackFoods.ContainsKey(rec.FoodId))
+                    .ToList());
+                context.SaveChanges();
+
+                foreach (var updateFood in SnackFoods)
+                {
+                    updateFood.Count = model.SnackFoods[updateFood.FoodId].Item2;
+                    model.SnackFoods.Remove(updateFood.FoodId);
+                }
+                context.SaveChanges();
+            }
+
+
+            foreach (var SnackFood in model.SnackFoods)
+            {
+                context.SnackFoods.Add(new SnackFood
+                {
+                    SnackId = snack.Id,
+                    FoodId = SnackFood.Key,
+                    Count = SnackFood.Value.Item2
+                });
+                context.SaveChanges();
+            }
+
+            return snack;
+        }
+
         public List<SnackViewModel> GetFullList()
         {
             using (var context = new DinerViewDatabase())
             {
                 return context.Snacks
-                .Include(rec => rec.SnackFoods)
-                .ThenInclude(rec => rec.Food)
-                .ToList()
-                .Select(rec => new SnackViewModel
-                {
-                    Id = rec.Id,
-                    SnackName = rec.SnackName,
-                    Price = rec.Price,
-                    SnackFoods = rec.SnackFoods
-                .ToDictionary(recPC => recPC.FoodId, recPC =>
-                (recPC.Food?.FoodName, recPC.Count))
-                })
-                .ToList();
+                    .Include(rec => rec.SnackFoods)
+                    .ThenInclude(rec => rec.Food)
+                    .ToList()
+                    .Select(rec => new SnackViewModel
+                    {
+                        Id = rec.Id,
+                        SnackName = rec.SnackName,
+                        Price = rec.Price,
+                        SnackFoods = rec.SnackFoods
+                            .ToDictionary(recSnackFoods => recSnackFoods.FoodId,
+                            recSnackFoods => (recSnackFoods.Food?.FoodName,
+                            recSnackFoods.Count))
+                    })
+                    .ToList();
             }
         }
+
         public List<SnackViewModel> GetFilteredList(SnackBindingModel model)
         {
             if (model == null)
             {
                 return null;
             }
+
             using (var context = new DinerViewDatabase())
             {
                 return context.Snacks
-                .Include(rec => rec.SnackFoods)
-                .ThenInclude(rec => rec.Food)
-                .Where(rec => rec.SnackName.Contains(model.SnackName))
-                .ToList()
-                .Select(rec => new SnackViewModel
-                {
-                    Id = rec.Id,
-                    SnackName = rec.SnackName,
-                    Price = rec.Price,
-                    SnackFoods = rec.SnackFoods
-                .ToDictionary(recPC => recPC.FoodId, recPC =>
-                (recPC.Food?.FoodName, recPC.Count))
-                })
-                .ToList();
+                    .Include(rec => rec.SnackFoods)
+                    .ThenInclude(rec => rec.Food)
+                    .Where(rec => rec.SnackName.Contains(model.SnackName))
+                    .ToList()
+                    .Select(rec => new SnackViewModel
+                    {
+                        Id = rec.Id,
+                        SnackName = rec.SnackName,
+                        Price = rec.Price,
+                        SnackFoods = rec.SnackFoods
+                            .ToDictionary(recSnackFood => recSnackFood.FoodId,
+                            recSnackFood => (recSnackFood.Food?.FoodName,
+                            recSnackFood.Count))
+                    })
+                    .ToList();
             }
         }
+
         public SnackViewModel GetElement(SnackBindingModel model)
         {
             if (model == null)
             {
                 return null;
             }
+
             using (var context = new DinerViewDatabase())
             {
-                var product = context.Snacks
-                .Include(rec => rec.SnackFoods)
-                .ThenInclude(rec => rec.Food)
-                .FirstOrDefault(rec => rec.SnackName.Equals(model.SnackFoods) || rec.Id
-                == model.Id);
-                return product != null ?
-                new SnackViewModel
-                {
-                    Id = product.Id,
-                    SnackName = product.SnackName,
-                    Price = product.Price,
-                    SnackFoods = product.SnackFoods
-                .ToDictionary(recPC => recPC.FoodId, recPC =>
-                (recPC.Food?.FoodName, recPC.Count))
-                } : null;
+                var Snack = context.Snacks
+                    .Include(rec => rec.SnackFoods)
+                    .ThenInclude(rec => rec.Food)
+                    .FirstOrDefault(rec => rec.SnackName == model.SnackName ||
+                    rec.Id == model.Id);
+
+                return Snack != null ?
+                    new SnackViewModel
+                    {
+                        Id = Snack.Id,
+                        SnackName = Snack.SnackName,
+                        Price = Snack.Price,
+                        SnackFoods = Snack.SnackFoods
+                            .ToDictionary(recSnackFood => recSnackFood.FoodId,
+                            recSnackFood => (recSnackFood.Food?.FoodName,
+                            recSnackFood.Count))
+                    } :
+                    null;
             }
         }
+
         public void Insert(SnackBindingModel model)
         {
             using (var context = new DinerViewDatabase())
@@ -89,10 +143,8 @@ namespace DinerViewDatabaseImplement.Implements
                 {
                     try
                     {
-                        Snack snack = CreateModel(model, new Snack());
-                        context.Snacks.Add(snack);
+                        CreateModel(model, new Snack(), context);
                         context.SaveChanges();
-                        snack = CreateModel(model, snack, context);
 
                         transaction.Commit();
                     }
@@ -104,6 +156,7 @@ namespace DinerViewDatabaseImplement.Implements
                 }
             }
         }
+
         public void Update(SnackBindingModel model)
         {
             using (var context = new DinerViewDatabase())
@@ -112,14 +165,16 @@ namespace DinerViewDatabaseImplement.Implements
                 {
                     try
                     {
-                        var element = context.Snacks.FirstOrDefault(rec => rec.Id ==
-                        model.Id);
-                        if (element == null)
+                        var secure = context.Snacks.FirstOrDefault(rec => rec.Id == model.Id);
+
+                        if (secure == null)
                         {
-                            throw new Exception("Элемент не найден");
+                            throw new Exception("Продукт не найден");
                         }
-                        CreateModel(model, element, context);
+
+                        context.Snacks.Add(CreateModel(model, new Snack(), context));
                         context.SaveChanges();
+
                         transaction.Commit();
                     }
                     catch
@@ -130,63 +185,21 @@ namespace DinerViewDatabaseImplement.Implements
                 }
             }
         }
+
         public void Delete(SnackBindingModel model)
         {
             using (var context = new DinerViewDatabase())
             {
-                Snack element = context.Snacks.FirstOrDefault(rec => rec.Id ==
-                model.Id);
-                if (element != null)
+                var Snack = context.Snacks.FirstOrDefault(rec => rec.Id == model.Id);
+
+                if (Snack == null)
                 {
-                    context.Snacks.Remove(element);
-                    context.SaveChanges();
+                    throw new Exception("Компонент не найден");
                 }
-                else
-                {
-                    throw new Exception("Элемент не найден");
-                }
-            }
-        }
-        private Snack CreateModel(SnackBindingModel model, Snack snack)
-        {
-            snack.SnackName = model.SnackName;
-            snack.Price = model.Price;
-            return snack;
-        }
-        private Snack CreateModel(SnackBindingModel model, Snack snack,
-        DinerViewDatabase context)
-        {
-            snack.SnackName = model.SnackName;
-            snack.Price = model.Price;
-            if (model.Id.HasValue)
-            {
-                var productComponents = context.SnackFoods.Where(rec =>
-                rec.SnackId == model.Id.Value).ToList();
-                // удалили те, которых нет в модели
-                context.SnackFoods.RemoveRange(productComponents.Where(rec =>
-                !model.SnackFoods.ContainsKey(rec.FoodId)).ToList());
-                context.SaveChanges();
-                // обновили количество у существующих записей
-                foreach (var updateComponent in productComponents)
-                {
-                    updateComponent.Count =
-                    model.SnackFoods[updateComponent.FoodId].Item2;
-                    model.SnackFoods.Remove(updateComponent.FoodId);
-                }
+
+                context.Snacks.Remove(Snack);
                 context.SaveChanges();
             }
-            // добавили новые
-            foreach (var pc in model.SnackFoods)
-            {
-                context.SnackFoods.Add(new SnackFood
-                {
-                    SnackId = snack.Id,
-                    FoodId = pc.Key,
-                    Count = pc.Value.Item2,
-                });                               
-                context.SaveChanges();                            
-            }
-            return snack;
         }
     }
 }

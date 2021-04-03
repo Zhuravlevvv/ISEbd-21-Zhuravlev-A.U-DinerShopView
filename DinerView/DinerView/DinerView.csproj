@@ -271,14 +271,6 @@
       <Project>{8de7019b-60ac-4bc2-92cf-5650a2e6d774}</Project>
       <Name>DinerViewDatabaseImplement</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DinerViewFileImplement\DinerViewFileImplement.csproj">
-      <Project>{f6e43160-4f8f-4e51-9f55-cf4f96baf8a7}</Project>
-      <Name>DinerViewFileImplement</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DinerViewListImplement\DinerViewListImplement.csproj">
-      <Project>{ccc3199a-aed5-4677-925a-ec73d7818f80}</Project>
-      <Name>DinerViewListImplement</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Data.SqlClient.SNI.1.0.19235.1\build\net46\Microsoft.Data.SqlClient.SNI.targets" Condition="Exists('..\packages\Microsoft.Data.SqlClient.SNI.1.0.19235.1\build\net46\Microsoft.Data.SqlClient.SNI.targets')" />
