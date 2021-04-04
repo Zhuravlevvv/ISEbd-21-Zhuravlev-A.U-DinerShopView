@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DinerBusinessLogic\DinerBusinessLogic.csproj" />
+    <ProjectReference Include="..\DinerViewDatabaseImplement\DinerViewDatabaseImplement.csproj" />
+    <ProjectReference Include="..\DinerViewRestApi\DinerViewRestApi.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using DinerBusinessLogic.Enums;
 using DinerViewFileImplement.Models;
+
 namespace DinerViewFileImplement
 {
     public class FileDataListSingleton
@@ -15,16 +16,19 @@ namespace DinerViewFileImplement
         private readonly string FoodFileName = "Food.xml";
         private readonly string SnackFileName = "Snack.xml";
         private readonly string OrderFileName = "Order.xml";
+        private readonly string ClientFileName = "Client.xml";
 
         public List<Food> Foods { get; set; }
         public List<Snack> Snacks { get; set; }
         public List<Order> Orders { get; set; }
+        public List<Client> Clients { get; set; }
 
         private FileDataListSingleton()
         {
             Foods = LoadFoods();
             Snacks = LoadSnacks();
             Orders = LoadOrders();
+            Clients = LoadClients();
         }
         public static FileDataListSingleton GetInstance()
         {
@@ -39,6 +43,7 @@ namespace DinerViewFileImplement
             SaveFoods();
             SaveSnacks();
             SaveOrders();
+            SaveClients();
         }
         private List<Food> LoadFoods()
         {
@@ -83,7 +88,26 @@ namespace DinerViewFileImplement
             }
             return list;
         }
-
+        private List<Client> LoadClients()
+        {
+            var list = new List<Client>();
+            if (File.Exists(ClientFileName))
+            {
+                XDocument xDocument = XDocument.Load(ClientFileName);
+                var xElements = xDocument.Root.Elements("Client").ToList();
+                foreach (var elem in xElements)
+                {
+                    list.Add(new Client
+                    {
+                        Id = Convert.ToInt32(elem.Attribute("Id").Value),
+                        ClientFIO = elem.Element("ClientFIO").Value,
+                        Email = elem.Element("Email").Value,
+                        Password = elem.Element("Password").Value,
+                    });
+                }
+            }
+            return list;
+        }
         private List<Order> LoadOrders()
         {
             var list = new List<Order>();
@@ -117,6 +141,7 @@ namespace DinerViewFileImplement
                     list.Add(new Order
                     {
                         Id = Convert.ToInt32(order.Attribute("Id").Value),
+                        ClientId = Convert.ToInt32(order.Element("ClientId").Value),
                         SnackId = Convert.ToInt32(order.Element("SnackId").Value),
                         Count = Convert.ToInt32(order.Element("Count").Value),
                         Sum = Convert.ToDecimal(order.Element("Sum").Value),
@@ -126,7 +151,6 @@ namespace DinerViewFileImplement
                     });
                 }
             }
-
             return list;
         }
         private void SaveFoods()
@@ -169,6 +193,7 @@ namespace DinerViewFileImplement
                 xDocument.Save(SnackFileName);
             }
         }
+
         private void SaveOrders()
         {
             if (Orders != null)
@@ -178,6 +203,7 @@ namespace DinerViewFileImplement
                 {
                     xElement.Add(new XElement("Order",
                         new XAttribute("Id", order.Id),
+                        new XElement("ClientId", order.ClientId),
                         new XElement("SnackId", order.SnackId),
                         new XElement("Count", order.Count),
                         new XElement("Sum", order.Sum),
@@ -187,6 +213,23 @@ namespace DinerViewFileImplement
                 }
                 XDocument xDocument = new XDocument(xElement);
                 xDocument.Save(OrderFileName);
+            }
+        }
+        private void SaveClients()
+        {
+            if (Clients != null)
+            {
+                var xElement = new XElement("Clients");
+                foreach (var client in Clients)
+                {
+                    xElement.Add(new XElement("Client",
+                    new XAttribute("Id", client.Id),
+                    new XElement("ClientFIO", client.ClientFIO),
+                    new XElement("Email", client.Email),
+                    new XElement("Password", client.Password)));
+                }
+                XDocument xDocument = new XDocument(xElement);
+                xDocument.Save(ClientFileName);
             }
         }
     }

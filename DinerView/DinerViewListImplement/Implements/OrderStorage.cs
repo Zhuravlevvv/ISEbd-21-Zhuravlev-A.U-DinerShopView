@@ -18,6 +18,7 @@ namespace DinerViewListImplement.Implements
         private Order CreateModel(OrderBindingModel model, Order order)
         {
             order.SnackId = model.SnackId;
+            order.ClientId = (int)model.ClientId;
             order.Count = model.Count;
             order.Sum = model.Sum;
             order.Status = model.Status;
@@ -27,14 +28,23 @@ namespace DinerViewListImplement.Implements
         }
         private OrderViewModel CreateModel(Order order)
         {
+            string snackName = null;
+            foreach (var snack in source.Snacks)
+            {
+                if (snack.Id == order.SnackId)
+                {
+                    snackName = snack.SnackName;
+                }
+            }
             return new OrderViewModel
             {
                 Id = order.Id,
-                SnackName = source.Snacks.FirstOrDefault(snack => snack.Id == order.SnackId)?.SnackName,
+                ClientId = order.ClientId,
                 SnackId = order.SnackId,
                 Count = order.Count,
                 Sum = order.Sum,
                 Status = order.Status,
+                SnackName = snackName,
                 DateCreate = order.DateCreate,
                 DateImplement = order.DateImplement
             };
@@ -54,26 +64,14 @@ namespace DinerViewListImplement.Implements
             {
                 return null;
             }
-            List<OrderViewModel> result = new List<OrderViewModel>();
-            if (model.DateTo != null && model.DateFrom != null)
-            {
-                foreach (var order in source.Orders)
-                {
-                    if (order.DateCreate >= model.DateTo && order.DateCreate <= model.DateFrom)
-                    {
-                        result.Add(CreateModel(order));
-                    }
-                }
-                return result;
-            }
-            foreach (var order in source.Orders)
-            {
-                if (order.SnackId.ToString().Contains(model.SnackId.ToString()))
-                {
-                    result.Add(CreateModel(order));
-                }
-            }
-            return result;
+            return source.Orders
+            .Where(rec => (!model.DateFrom.HasValue && !model.DateTo.HasValue &&
+            rec.DateCreate.Date == model.DateCreate.Date) ||
+            (model.DateFrom.HasValue && model.DateTo.HasValue && rec.DateCreate.Date
+            >= model.DateFrom.Value.Date && rec.DateCreate.Date <= model.DateTo.Value.Date) ||
+            (model.ClientId.HasValue && rec.ClientId == model.ClientId))
+            .Select(CreateModel)
+            .ToList();
         }
         public OrderViewModel GetElement(OrderBindingModel model)
         {
@@ -81,11 +79,12 @@ namespace DinerViewListImplement.Implements
             {
                 return null;
             }
-            foreach (var order in source.Orders)
+            foreach (var food in source.Orders)
             {
-                if (order.Id == model.Id)
+                if (food.Id == model.Id || food.SnackId ==
+                    model.SnackId)
                 {
-                    return CreateModel(order);
+                    return CreateModel(food);
                 }
             }
             return null;
