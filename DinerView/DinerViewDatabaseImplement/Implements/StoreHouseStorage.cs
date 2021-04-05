@@ -54,7 +54,6 @@ namespace DinerViewDatabaseImplement.Implements
 
             return storeHouse;
         }
-
         public bool CheckAndTake(int count, Dictionary<int, (string, int)> foods)
         {
             using (var context = new DinerViewDatabase())
