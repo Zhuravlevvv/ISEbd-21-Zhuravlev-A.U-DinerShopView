@@ -13,9 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DinerViewFileImplement", "D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DinerViewDatabaseImplement", "DinerViewDatabaseImplement\DinerViewDatabaseImplement.csproj", "{8DE7019B-60AC-4BC2-92CF-5650A2E6D774}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DinerViewRestApi", "DinerViewRestApi\DinerViewRestApi.csproj", "{36FA9762-1EAF-4D01-804C-AEF7D168B2B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DinerViewRestApi", "DinerViewRestApi\DinerViewRestApi.csproj", "{36FA9762-1EAF-4D01-804C-AEF7D168B2B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DinerViewClientApp", "DinerViewClientApp\DinerViewClientApp.csproj", "{4A89766D-A6B3-4241-9D6A-699D5A3EF6AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DinerViewClientApp", "DinerViewClientApp\DinerViewClientApp.csproj", "{4A89766D-A6B3-4241-9D6A-699D5A3EF6AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

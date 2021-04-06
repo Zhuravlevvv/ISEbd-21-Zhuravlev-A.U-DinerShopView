@@ -16,7 +16,7 @@ namespace DinerViewClientApp
             client.BaseAddress = new Uri(configuration["IPAddress"]);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new
-            MediaTypeWithQualityHeaderValue("application/json"));
+           MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         public static T GetRequest<T>(string requestUrl)
