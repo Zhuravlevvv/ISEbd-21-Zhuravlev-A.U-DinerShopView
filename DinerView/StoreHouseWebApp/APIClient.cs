@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace DinerViewClientApp
+namespace StoreHouseWebApp
 {
     public static class APIClient
     {
@@ -44,5 +44,6 @@ namespace DinerViewClientApp
                 throw new Exception(result);
             }
         }
+
     }
 }

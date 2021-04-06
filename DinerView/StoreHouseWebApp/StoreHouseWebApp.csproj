@@ -5,11 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DinerBusinessLogic\DinerBusinessLogic.csproj" />
-    <ProjectReference Include="..\DinerViewDatabaseImplement\DinerViewDatabaseImplement.csproj" />
-    <ProjectReference Include="..\DinerViewRestApi\DinerViewRestApi.csproj" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
-  <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+  <ItemGroup>
+    <ProjectReference Include="..\DinerBusinessLogic\DinerBusinessLogic.csproj" />
+    <ProjectReference Include="..\DinerViewDatabaseImplement\DinerViewDatabaseImplement.csproj" />
+    <ProjectReference Include="..\DinerViewFileImplement\DinerViewFileImplement.csproj" />
+    <ProjectReference Include="..\DinerViewListImplement\DinerViewListImplement.csproj" />
+  </ItemGroup>
 
 </Project>
