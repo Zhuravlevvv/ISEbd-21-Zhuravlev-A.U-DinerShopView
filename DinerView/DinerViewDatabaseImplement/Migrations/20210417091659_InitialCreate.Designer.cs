@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DinerViewDatabaseImplement.Migrations
 {
     [DbContext(typeof(DinerViewDatabase))]
-    [Migration("20210403113506_InitialCreate")]
+    [Migration("20210417091659_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
