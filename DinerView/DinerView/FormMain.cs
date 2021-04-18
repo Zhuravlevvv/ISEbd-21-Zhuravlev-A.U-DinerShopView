@@ -1,9 +1,11 @@
 ﻿using DinerBusinessLogic.BindingModels;
 using DinerBusinessLogic.BusinessLogics;
 using Microsoft.Reporting.WebForms;
+using DinerBusinessLogic.ViewModels;
 using System;
 using System.Windows.Forms;
 using Unity;
+using System.Collections.Generic;
 
 namespace DinerView
 {
@@ -13,11 +15,13 @@ namespace DinerView
         public new IUnityContainer Container { get; set; }
 
         private readonly OrderLogic _orderLogic;
+        private readonly WorkModeling workModeling;
         private ReportLogic report;
-        public FormMain(OrderLogic orderLogic, ReportLogic Report)
+        public FormMain(OrderLogic orderLogic, ReportLogic Report, WorkModeling modeling)
         {
             InitializeComponent();
-            this._orderLogic = orderLogic;
+            _orderLogic = orderLogic;
+            workModeling = modeling;
             report = Report;
         }
         private void FormMain_Load(object sender, EventArgs e)
@@ -35,6 +39,7 @@ namespace DinerView
                     dataGridView.Columns[0].Visible = false;
                     dataGridView.Columns[1].Visible = false;
                     dataGridView.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    dataGridView.Columns[3].Visible = false;
                 }
             }
             catch (Exception ex)
@@ -143,6 +148,18 @@ namespace DinerView
         private void списокЗаказовToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var form = Container.Resolve<FormReportOrders>();
+            form.ShowDialog();
+        }
+
+        private void запускРаботToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            workModeling.DoWork();
+            LoadData();
+        }
+
+        private void исполнителиToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormImplementers>();
             form.ShowDialog();
         }
     }

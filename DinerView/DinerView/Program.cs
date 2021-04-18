@@ -19,6 +19,7 @@ namespace DinerView
             var container = BuildUnityContainer();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            new UnityContainer().AddExtension(new Diagnostic());
             Application.Run(container.Resolve<FormMain>());
         }
         private static IUnityContainer BuildUnityContainer()
@@ -30,6 +31,11 @@ namespace DinerView
            HierarchicalLifetimeManager());
             currentContainer.RegisterType<ISnackStorage, SnackStorage>(new
            HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IClientStorage, ClientStorage>(new
+           HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IImplementerStorage, ImplementerStorage>(new
+            HierarchicalLifetimeManager());
+
             currentContainer.RegisterType<FoodLogic>(new
            HierarchicalLifetimeManager());
             currentContainer.RegisterType<OrderLogic>(new HierarchicalLifetimeManager());
@@ -37,6 +43,8 @@ namespace DinerView
            HierarchicalLifetimeManager());
             currentContainer.RegisterType<ReportLogic>(new HierarchicalLifetimeManager());
             return currentContainer;
+            currentContainer.RegisterType<ClientLogic>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<WorkModeling>(new HierarchicalLifetimeManager());
         }
     }
 }
