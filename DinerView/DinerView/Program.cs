@@ -39,11 +39,8 @@ namespace DinerView
             currentContainer.RegisterType<FoodLogic>(new HierarchicalLifetimeManager());
 
             currentContainer.RegisterType<OrderLogic>(new HierarchicalLifetimeManager());
-
-            currentContainer.RegisterType<SnackLogic>(new HierarchicalLifetimeManager());
-
-            currentContainer.RegisterType<StoreHouseLogic>(new HierarchicalLifetimeManager());
-
+            currentContainer.RegisterType<SnackLogic>(new
+           HierarchicalLifetimeManager());
             return currentContainer;
         }
     }
