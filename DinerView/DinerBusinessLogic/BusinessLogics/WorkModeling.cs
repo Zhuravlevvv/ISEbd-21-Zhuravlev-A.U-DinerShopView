@@ -70,7 +70,7 @@ namespace DinerBusinessLogic.BusinessLogics
             {
                 foreach (var order in orders)
                 {
-                    // пытаемся назначить заказ на исполнителя
+                    // пытаемся назначить исполнителя на заказ
                     try
                     {
                         _orderLogic.TakeOrderInWork(new ChangeStatusBindingModel

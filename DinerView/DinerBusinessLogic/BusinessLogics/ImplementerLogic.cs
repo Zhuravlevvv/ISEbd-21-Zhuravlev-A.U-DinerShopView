@@ -31,7 +31,7 @@ namespace DinerBusinessLogic.BusinessLogics
 
         public void CreateOrUpdate(ImplementerBindingModel model)
         {
-            if (model.Id.HasValue)
+            if (model != null)
             {
                 _implementerStorage.Update(model);
             }
