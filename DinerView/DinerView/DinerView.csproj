@@ -326,13 +326,17 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Report.rdlc" />
-    <EmbeddedResource Include="ReportOrders.rdlc" />
+    <EmbeddedResource Include="ReportOrder.rdlc" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\DinerBusinessLogic.ViewModels.FoodViewModel.datasource" />
     <None Include="Properties\DataSources\DinerBusinessLogic.ViewModels.OrderViewModel.datasource" />
     <None Include="Properties\DataSources\DinerBusinessLogic.ViewModels.ReportFoodSnackViewModel.datasource" />
+    <None Include="Properties\DataSources\DinerBusinessLogic.ViewModels.ReportOrderByDateViewModel.datasource" />
     <None Include="Properties\DataSources\DinerBusinessLogic.ViewModels.ReportOrdersViewModel.datasource" />
+    <None Include="Properties\DataSources\DinerBusinessLogic.ViewModels.ReportStoreHouseFoodsViewModel.datasource" />
+    <None Include="Properties\DataSources\DinerBusinessLogic.ViewModels.ReportStoreHouseViewModel.datasource" />
     <None Include="Properties\DataSources\DinerBusinessLogic.ViewModels.SnackViewModel.datasource" />
+    <None Include="Properties\DataSources\DinerBusinessLogic.ViewModels.StoreHouseViewModel.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

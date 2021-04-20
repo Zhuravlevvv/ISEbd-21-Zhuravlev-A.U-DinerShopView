@@ -177,6 +177,7 @@ namespace DinerView
         {
             var form = Container.Resolve<FormReportOrdersByDate>();
             form.ShowDialog();
+
         }
 
         private void списокПродуктовНаСкладахToolStripMenuItem_Click(object sender, EventArgs e)

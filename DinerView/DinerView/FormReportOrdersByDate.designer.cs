@@ -34,16 +34,13 @@ namespace DinerView
             this.reportViewerOrders = new Microsoft.Reporting.WinForms.ReportViewer();
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonCreate = new System.Windows.Forms.Button();
-            this.ReportOrderByDateViewModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.ReportOrderByDateViewModelBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // reportViewerOrders
             // 
             reportDataSource1.Name = "DataSetOrders";
-            reportDataSource1.Value = this.ReportOrderByDateViewModelBindingSource;
             this.reportViewerOrders.LocalReport.DataSources.Add(reportDataSource1);
-            this.reportViewerOrders.LocalReport.ReportEmbeddedResource = "DinerView.ReportOrders.rdlc";
+            this.reportViewerOrders.LocalReport.ReportEmbeddedResource = "DinerView.ReportOrder.rdlc";
             this.reportViewerOrders.Location = new System.Drawing.Point(-3, 64);
             this.reportViewerOrders.Name = "reportViewerOrders";
             this.reportViewerOrders.ServerReport.BearerToken = null;
@@ -70,10 +67,6 @@ namespace DinerView
             this.buttonCreate.UseVisualStyleBackColor = true;
             this.buttonCreate.Click += new System.EventHandler(this.buttonCreate_Click);
             // 
-            // ReportOrderByDateViewModelBindingSource
-            // 
-            this.ReportOrderByDateViewModelBindingSource.DataMember = "ReportOrderByDateViewModel";
-            // 
             // FormReportOrdersByDate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -85,7 +78,6 @@ namespace DinerView
             this.Name = "FormReportOrdersByDate";
             this.Text = "Отчёты по заказам";
             this.Load += new System.EventHandler(this.FormReportOrdersByDate_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.ReportOrderByDateViewModelBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -95,6 +87,5 @@ namespace DinerView
         private Microsoft.Reporting.WinForms.ReportViewer reportViewerOrders;
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.Button buttonCreate;
-        private System.Windows.Forms.BindingSource ReportOrderByDateViewModelBindingSource;
     }
 }

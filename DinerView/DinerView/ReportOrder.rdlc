@@ -2,7 +2,7 @@
 <Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <Body>
     <ReportItems>
-      <Textbox Name="Textbox1">
+      <Textbox Name="Textbox7">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
         <Paragraphs>
@@ -11,20 +11,19 @@
               <TextRun>
                 <Value>Список заказов</Value>
                 <Style>
-                  <FontSize>25pt</FontSize>
+                  <FontSize>18pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
                 </Style>
               </TextRun>
             </TextRuns>
-            <Style>
-              <TextAlign>Center</TextAlign>
-            </Style>
+            <Style />
           </Paragraph>
         </Paragraphs>
-        <rd:DefaultName>Textbox1</rd:DefaultName>
-        <Top>0.47307cm</Top>
-        <Left>5.55308cm</Left>
-        <Height>1.15562cm</Height>
-        <Width>8.10917cm</Width>
+        <rd:DefaultName>Textbox7</rd:DefaultName>
+        <Top>0.63182cm</Top>
+        <Left>6.1087cm</Left>
+        <Height>1.10271cm</Height>
+        <Width>5.30458cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -35,17 +34,17 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
-      <Tablix Name="Tablix5">
+      <Tablix Name="Tablix2">
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>5.42806cm</Width>
+              <Width>5.3134cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>5.42806cm</Width>
+              <Width>5.3134cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>5.42806cm</Width>
+              <Width>5.3134cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -54,7 +53,7 @@
               <TablixCells>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox39">
+                    <Textbox Name="Textbox9">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -62,13 +61,15 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Дата</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox39</rd:DefaultName>
+                      <rd:DefaultName>Textbox9</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -84,7 +85,7 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox41">
+                    <Textbox Name="Textbox11">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -92,13 +93,15 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Количество</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox41</rd:DefaultName>
+                      <rd:DefaultName>Textbox11</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -114,7 +117,7 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox43">
+                    <Textbox Name="Textbox13">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -122,13 +125,15 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Сумма</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox43</rd:DefaultName>
+                      <rd:DefaultName>Textbox13</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -149,7 +154,7 @@
               <TablixCells>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Date">
+                    <Textbox Name="Date1">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -157,15 +162,13 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!Date.Value</Value>
-                              <Style>
-                                <Format>d</Format>
-                              </Style>
+                              <Style />
                             </TextRun>
                           </TextRuns>
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Date</rd:DefaultName>
+                      <rd:DefaultName>Date1</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -261,10 +264,10 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>DataSetOrders</DataSetName>
-        <Top>2.64266cm</Top>
-        <Left>0.97578cm</Left>
+        <Top>1.91092cm</Top>
+        <Left>0.28787cm</Left>
         <Height>1.2cm</Height>
-        <Width>16.28417cm</Width>
+        <Width>15.94021cm</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -273,10 +276,10 @@
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>2.02083in</Height>
+    <Height>2in</Height>
     <Style />
   </Body>
-  <Width>7.01042in</Width>
+  <Width>6.5in</Width>
   <Page>
     <PageHeight>29.7cm</PageHeight>
     <PageWidth>21cm</PageWidth>
@@ -289,25 +292,18 @@
   </Page>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
-    <DataSource Name="SecuritySystemBusinessLogicViewModels">
+    <DataSource Name="DinerBusinessLogicViewModels">
       <ConnectionProperties>
         <DataProvider>System.Data.DataSet</DataProvider>
         <ConnectString>/* Local Connection */</ConnectString>
       </ConnectionProperties>
-      <rd:DataSourceID>dd28b2d9-497f-4fb5-973c-edec8f26dbd4</rd:DataSourceID>
-    </DataSource>
-    <DataSource Name="SecuritySystemBusinessLogicViewModels1">
-      <ConnectionProperties>
-        <DataProvider>System.Data.DataSet</DataProvider>
-        <ConnectString>/* Local Connection */</ConnectString>
-      </ConnectionProperties>
-      <rd:DataSourceID>6ff742dd-5e62-4b60-a5dc-e7588236d0c9</rd:DataSourceID>
+      <rd:DataSourceID>af8ae80a-a749-4f9b-a3c9-d248a5cf3c3d</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
     <DataSet Name="DataSetOrders">
       <Query>
-        <DataSourceName>SecuritySystemBusinessLogicViewModels1</DataSourceName>
+        <DataSourceName>DinerBusinessLogicViewModels</DataSourceName>
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
@@ -325,12 +321,12 @@
         </Field>
       </Fields>
       <rd:DataSetInfo>
-        <rd:DataSetName>SecuritySystemBusinessLogic.ViewModels</rd:DataSetName>
+        <rd:DataSetName>DinerBusinessLogic.ViewModels</rd:DataSetName>
         <rd:TableName>ReportOrderByDateViewModel</rd:TableName>
-        <rd:ObjectDataSourceType>SecuritySystemBusinessLogic.ViewModels.ReportOrderByDateViewModel, SecuritySystemBusinessLogic, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
+        <rd:ObjectDataSourceType>DinerBusinessLogic.ViewModels.ReportOrderByDateViewModel, DinerBusinessLogic, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
       </rd:DataSetInfo>
     </DataSet>
   </DataSets>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
-  <rd:ReportID>4154605d-85ec-46da-8c1e-1217ceea2f37</rd:ReportID>
+  <rd:ReportID>a2941f43-b74d-45ff-84ec-ae73d0c0733f</rd:ReportID>
 </Report>
