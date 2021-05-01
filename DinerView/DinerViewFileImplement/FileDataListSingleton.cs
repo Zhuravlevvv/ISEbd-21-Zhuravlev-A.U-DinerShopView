@@ -18,12 +18,14 @@ namespace DinerViewFileImplement
         private readonly string OrderFileName = "Order.xml";
         private readonly string ClientFileName = "Client.xml";
         private readonly string ImplementerFileName = "Implementer.xml";
+        private readonly string MessageInfoFileName = "MessageInfo.xml";
 
         public List<Food> Foods { get; set; }
         public List<Snack> Snacks { get; set; }
         public List<Order> Orders { get; set; }
         public List<Client> Clients { get; set; }
         public List<Implementer> Implementers { get; set; }
+        public List<MessageInfo> MessageInfoes { get; set; }
 
         private FileDataListSingleton()
         {
@@ -32,6 +34,7 @@ namespace DinerViewFileImplement
             Orders = LoadOrders();
             Clients = LoadClients();
             Implementers = LoadImplementers();
+            MessageInfoes = LoadMessageInfoes();
         }
         public static FileDataListSingleton GetInstance()
         {
@@ -48,6 +51,7 @@ namespace DinerViewFileImplement
             SaveOrders();
             SaveClients();
             SaveImplementers();
+            SaveMessageInfoes();
         }
         private List<Food> LoadFoods()
         {
@@ -62,6 +66,29 @@ namespace DinerViewFileImplement
                     {
                         Id = Convert.ToInt32(food.Attribute("Id").Value),
                         FoodName = food.Element("FoodName").Value
+                    });
+                }
+            }
+            return list;
+        }
+        private List<MessageInfo> LoadMessageInfoes()
+        {
+            var list = new List<MessageInfo>();
+            if (File.Exists(MessageInfoFileName))
+            {
+                XDocument xDocument = XDocument.Load(MessageInfoFileName);
+                var xElements = xDocument.Root.Elements("MessageInfo").ToList();
+
+                foreach (var elem in xElements)
+                {
+                    list.Add(new MessageInfo
+                    {
+                        MessageId = elem.Attribute("Id").Value,
+                        ClientId = Convert.ToInt32(elem.Element("ClientId").Value),
+                        SenderName = elem.Element("ClientId").Value,
+                        Subject = elem.Element("Subject").Value,
+                        Body = elem.Element("Body").Value,
+                        DateDelivery = Convert.ToDateTime(elem.Element("DateDelivery").Value)
                     });
                 }
             }
@@ -191,6 +218,25 @@ namespace DinerViewFileImplement
                 }
                 XDocument xDocument = new XDocument(xElement);
                 xDocument.Save(FoodFileName);
+            }
+        }
+        private void SaveMessageInfoes()
+        {
+            if (MessageInfoes != null)
+            {
+                var xElement = new XElement("MessageInfo");
+                foreach (var messageInfo in MessageInfoes)
+                {
+                    xElement.Add(new XElement("MessageInfo",
+                    new XAttribute("MessageId", messageInfo.MessageId),
+                    new XElement("Subject", messageInfo.Subject),
+                    new XElement("SenderName", messageInfo.SenderName),
+                    new XElement("Body", messageInfo.Body),
+                    new XElement("ClientId", messageInfo.ClientId),
+                    new XElement("DateDelivery", messageInfo.DateDelivery)));
+                }
+                XDocument xDocument = new XDocument(xElement);
+                xDocument.Save(MessageInfoFileName);
             }
         }
         private void SaveSnacks()

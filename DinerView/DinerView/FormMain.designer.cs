@@ -43,6 +43,7 @@
             this.buttonCreateOrder = new System.Windows.Forms.Button();
             this.buttonPayOrder = new System.Windows.Forms.Button();
             this.buttonRef = new System.Windows.Forms.Button();
+            this.buttonMails = new System.Windows.Forms.Button();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
@@ -164,7 +165,7 @@
             // 
             // buttonPayOrder
             // 
-            this.buttonPayOrder.Location = new System.Drawing.Point(605, 251);
+            this.buttonPayOrder.Location = new System.Drawing.Point(607, 78);
             this.buttonPayOrder.Margin = new System.Windows.Forms.Padding(2);
             this.buttonPayOrder.Name = "buttonPayOrder";
             this.buttonPayOrder.Size = new System.Drawing.Size(132, 26);
@@ -175,7 +176,7 @@
             // 
             // buttonRef
             // 
-            this.buttonRef.Location = new System.Drawing.Point(605, 281);
+            this.buttonRef.Location = new System.Drawing.Point(607, 108);
             this.buttonRef.Margin = new System.Windows.Forms.Padding(2);
             this.buttonRef.Name = "buttonRef";
             this.buttonRef.Size = new System.Drawing.Size(132, 27);
@@ -184,11 +185,23 @@
             this.buttonRef.UseVisualStyleBackColor = true;
             this.buttonRef.Click += new System.EventHandler(this.ButtonRef_Click);
             // 
+            // buttonMails
+            // 
+            this.buttonMails.Location = new System.Drawing.Point(607, 253);
+            this.buttonMails.Margin = new System.Windows.Forms.Padding(2);
+            this.buttonMails.Name = "buttonMails";
+            this.buttonMails.Size = new System.Drawing.Size(132, 55);
+            this.buttonMails.TabIndex = 3;
+            this.buttonMails.Text = "Письма";
+            this.buttonMails.UseVisualStyleBackColor = true;
+            this.buttonMails.Click += new System.EventHandler(this.buttonMails_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(750, 322);
+            this.Controls.Add(this.buttonMails);
             this.Controls.Add(this.buttonRef);
             this.Controls.Add(this.buttonPayOrder);
             this.Controls.Add(this.buttonCreateOrder);
@@ -224,5 +237,6 @@
         private System.Windows.Forms.ToolStripMenuItem исполнителиToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem запускРаботToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem клиентыToolStripMenuItem;
+        private System.Windows.Forms.Button buttonMails;
     }
 }
