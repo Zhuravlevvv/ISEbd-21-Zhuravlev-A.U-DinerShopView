@@ -95,7 +95,7 @@ namespace DinerBusinessLogic.BusinessLogics
                         Id = order.ClientId
                     })?.Email,
                     Subject = $"Заказ №{order.Id}",
-                    Text = $"Заказ №{order.Id} передан в работу."
+                    Text = $"Заказ №{order.Id} на сумму {order.Sum} передан в работу."
                 });
             }            
         }
@@ -132,7 +132,7 @@ namespace DinerBusinessLogic.BusinessLogics
                     Id = order.ClientId
                 })?.Email,
                 Subject = $"Заказ №{order.Id}",
-                Text = $"Заказ №{order.Id} выполнен."
+                Text = $"Заказ №{order.Id} на сумму {order.Sum} выполнен."
             });
         }
         public void PayOrder(ChangeStatusBindingModel model)

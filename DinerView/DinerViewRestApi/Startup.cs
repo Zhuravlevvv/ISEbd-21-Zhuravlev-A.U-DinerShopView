@@ -32,16 +32,17 @@ namespace DinerViewRestApi
             services.AddTransient<IClientStorage, ClientStorage>();
             services.AddTransient<IOrderStorage, OrderStorage>();
             services.AddTransient<ISnackStorage, SnackStorage>();
+            services.AddTransient<IMessageInfoStorage, MessageInfoStorage>();
             services.AddTransient<OrderLogic>();
             services.AddTransient<ClientLogic>();
             services.AddTransient<SnackLogic>();
             services.AddTransient<MailLogic>();
             MailLogic.MailConfig(new MailConfig
             {
-                SmtpClientHost = "smtp.gmail.com",
+                SmtpClientHost = "smtp.yandex.ru",
                 SmtpClientPort = 587,
-                MailLogin = "zakusochnaya73@gmail.com",
-                MailPassword = "zakuska1337",
+                MailLogin = "zhuravlev1337.73@yandex.ru",
+                MailPassword = "zhura1337228",
             });
             services.AddControllers().AddNewtonsoftJson();
 

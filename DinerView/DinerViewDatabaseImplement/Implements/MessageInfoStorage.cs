@@ -15,15 +15,15 @@ namespace DinerViewDatabaseImplement.Implements
             using (var context = new DinerViewDatabase())
             {
                 return context.MessageInfoes
-                .Select(rec => new MessageInfoViewModel
-                {
-                    MessageId = rec.MessageId,
-                    SenderName = rec.SenderName,
-                    DateDelivery = rec.DateDelivery,
-                    Subject = rec.Subject,
-                    Body = rec.Body
-                })
-                .ToList();
+                    .Select(rec => new MessageInfoViewModel
+                    {
+                        MessageId = rec.MessageId,
+                        SenderName = rec.SenderName,
+                        DateDelivery = rec.DateDelivery,
+                        Subject = rec.Subject,
+                        Body = rec.Body
+                    })
+                    .ToList();
             }
         }
 
@@ -33,22 +33,21 @@ namespace DinerViewDatabaseImplement.Implements
             {
                 return null;
             }
+
             using (var context = new DinerViewDatabase())
             {
                 return context.MessageInfoes
-                .Where(rec => (model.ClientId.HasValue && rec.ClientId ==
-                model.ClientId) ||
-                (!model.ClientId.HasValue && rec.DateDelivery.Date ==
-                model.DateDelivery.Date))
-                .Select(rec => new MessageInfoViewModel
-                {
-                    MessageId = rec.MessageId,
-                    SenderName = rec.SenderName,
-                    DateDelivery = rec.DateDelivery,
-                    Subject = rec.Subject,
-                    Body = rec.Body
-                })
-                .ToList();
+                    .Where(rec => (model.ClientId.HasValue && rec.ClientId == model.ClientId) ||
+                    (!model.ClientId.HasValue && rec.DateDelivery.Date == model.DateDelivery.Date))
+                    .Select(rec => new MessageInfoViewModel
+                    {
+                        MessageId = rec.MessageId,
+                        SenderName = rec.SenderName,
+                        DateDelivery = rec.DateDelivery,
+                        Subject = rec.Subject,
+                        Body = rec.Body
+                    })
+                    .ToList();
             }
         }
 
@@ -56,12 +55,12 @@ namespace DinerViewDatabaseImplement.Implements
         {
             using (var context = new DinerViewDatabase())
             {
-                MessageInfo element = context.MessageInfoes.FirstOrDefault(rec =>
-                rec.MessageId == model.MessageId);
+                MessageInfo element = context.MessageInfoes.FirstOrDefault(rec => rec.MessageId == model.MessageId);
                 if (element != null)
                 {
-                    throw new Exception("Уже есть письмо с таким идентификатором");
+                    return;
                 }
+
                 context.MessageInfoes.Add(new MessageInfo
                 {
                     MessageId = model.MessageId,

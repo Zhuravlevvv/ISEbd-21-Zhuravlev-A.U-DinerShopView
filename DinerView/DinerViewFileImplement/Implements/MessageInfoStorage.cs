@@ -8,7 +8,7 @@ using DinerViewFileImplement.Models;
 
 namespace DinerViewFileImplement.Implements
 {
-    public class MessageInfoStorage
+    public class MessageInfoStorage : IMessageInfoStorage
     {
         private readonly FileDataListSingleton source;
 
@@ -37,11 +37,10 @@ namespace DinerViewFileImplement.Implements
             {
                 return null;
             }
+
             return source.MessageInfoes
-                .Where(rec => (model.ClientId.HasValue && rec.ClientId ==
-                model.ClientId) ||
-                (!model.ClientId.HasValue && rec.DateDelivery.Date ==
-                model.DateDelivery.Date))
+                .Where(rec => (model.ClientId.HasValue && rec.ClientId == model.ClientId) ||
+                (!model.ClientId.HasValue && rec.DateDelivery.Date == model.DateDelivery.Date))
                 .Select(rec => new MessageInfoViewModel
                 {
                     MessageId = rec.MessageId,
@@ -55,12 +54,12 @@ namespace DinerViewFileImplement.Implements
 
         public void Insert(MessageInfoBindingModel model)
         {
-            MessageInfo element = source.MessageInfoes.FirstOrDefault(rec =>
-                rec.MessageId == model.MessageId);
+            MessageInfo element = source.MessageInfoes.FirstOrDefault(rec => rec.MessageId == model.MessageId);
             if (element != null)
             {
                 throw new Exception("Уже есть письмо с таким идентификатором");
             }
+
             source.MessageInfoes.Add(new MessageInfo
             {
                 MessageId = model.MessageId,
@@ -70,7 +69,6 @@ namespace DinerViewFileImplement.Implements
                 Subject = model.Subject,
                 Body = model.Body
             });
-
         }
     }
 }
