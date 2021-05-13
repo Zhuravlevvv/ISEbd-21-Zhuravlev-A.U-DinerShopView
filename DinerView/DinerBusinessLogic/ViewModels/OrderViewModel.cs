@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using DinerBusinessLogic.Enums;
 using System.Runtime.Serialization;
+using DinerBusinessLogic.Attributes;
 
 namespace DinerBusinessLogic.ViewModels
 {
@@ -9,6 +10,7 @@ namespace DinerBusinessLogic.ViewModels
     [DataContract]
     public class OrderViewModel
     {
+        [Column(title: "Номер", width: 100, visible: false)]
         [DataMember]
         public int Id { get; set; }
         [DataMember]
@@ -18,27 +20,27 @@ namespace DinerBusinessLogic.ViewModels
         [DataMember]
         public int? ImplementerId { get; set; }
         [DataMember]
-        [DisplayName("Клиент")]
+        [Column(title: "Клиент", width: 150)]
         public string ClientFIO { get; set; }
         [DataMember]
-        [DisplayName("Исполнитель")]
+        [Column(title: "Исполнитель", width: 150)]
         public string ImplementerFIO { get; set; }
         [DataMember]
-        [DisplayName("Закуска")]
+        [Column(title: "Закуска", gridViewAutoSize: GridViewAutoSize.AllCells)]
         public string SnackName { get; set; }
         [DataMember]
-        [DisplayName("Количество")]
+        [Column(title: "Количество", width: 100)]
         public int Count { get; set; }
         [DataMember]
-        [DisplayName("Сумма")]
+        [Column(title: "Сумма", width: 50)]
         public decimal Sum { get; set; }
         [DataMember]
-        [DisplayName("Статус")]
+        [Column(title: "Статус", width: 100)]
         public OrderStatus Status { get; set; }
         [DataMember]
-        [DisplayName("Дата создания")]
+        [Column(title: "Дата создания", width: 100)]
         public DateTime DateCreate { get; set; }
-        [DisplayName("Дата выполнения")]
+        [Column(title: "Дата выполнения", width: 100)]
         public DateTime? DateImplement { get; set; }
     }
 }
