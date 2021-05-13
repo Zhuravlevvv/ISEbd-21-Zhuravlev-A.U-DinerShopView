@@ -22,9 +22,10 @@ namespace DinerBusinessLogic.BusinessLogics
         public WorkModeling(IImplementerStorage implementerStorage, IOrderStorage
         orderStorage, OrderLogic orderLogic)
         {
-            this._implementerStorage = implementerStorage;
-            this._orderStorage = orderStorage;
-            this._orderLogic = orderLogic;
+            _implementerStorage = implementerStorage;
+            _orderStorage = orderStorage;
+            _orderLogic = orderLogic;
+
             rnd = new Random(1000);
         }
         /// <summary>
@@ -84,7 +85,6 @@ namespace DinerBusinessLogic.BusinessLogics
                         _orderLogic.FinishOrder(new ChangeStatusBindingModel
                         {
                             OrderId = order.Id,
-                            ImplementerId = implementer.Id
                         });
                         // отдыхаем
                         Thread.Sleep(implementer.PauseTime);
