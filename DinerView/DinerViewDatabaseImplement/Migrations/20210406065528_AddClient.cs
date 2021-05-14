@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DinerViewDatabaseImplement.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class AddClient : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
