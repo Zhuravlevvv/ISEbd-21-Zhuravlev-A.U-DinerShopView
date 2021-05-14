@@ -31,9 +31,13 @@ namespace DinerViewRestApi
             services.AddTransient<IClientStorage, ClientStorage>();
             services.AddTransient<IOrderStorage, OrderStorage>();
             services.AddTransient<ISnackStorage, SnackStorage>();
+            services.AddTransient<IFoodStorage, FoodStorage>();
+            services.AddTransient<IStoreHouseStorage, StoreHouseStorage>();
             services.AddTransient<OrderLogic>();
             services.AddTransient<ClientLogic>();
             services.AddTransient<SnackLogic>();
+            services.AddTransient<StoreHouseLogic>();
+            services.AddTransient<FoodLogic>();
             services.AddControllers().AddNewtonsoftJson();
         }
 

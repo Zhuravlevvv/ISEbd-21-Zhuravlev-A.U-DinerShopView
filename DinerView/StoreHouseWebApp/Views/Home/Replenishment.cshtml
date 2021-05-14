@@ -1,4 +1,4 @@
-﻿@{
+﻿a@{
     ViewData["Title"] = "Replenishment";
 }
 
@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-4">Компонент:</div>
+        <div class="col-4">Продукт:</div>
         <div class="col-8">
             <select name="foodId" class="form-control" asp-items="@(new SelectList(ViewBag.Foods, "Id", "FoodName"))"></select>
         </div>

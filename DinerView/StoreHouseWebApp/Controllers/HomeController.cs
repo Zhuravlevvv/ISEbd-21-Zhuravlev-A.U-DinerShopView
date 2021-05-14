@@ -157,7 +157,7 @@ namespace StoreHouseWebApp.Controllers
                 return Redirect("~/Home/Enter");
             }
             ViewBag.StoreHouses = APIClient.GetRequest<List<StoreHouseViewModel>>("api/storehouse/getstorehouses");
-            ViewBag.Foods = APIClient.GetRequest<List<FoodViewModel>>($"api/storehouse/getfoods");
+            ViewBag.Components = APIClient.GetRequest<List<FoodViewModel>>($"api/storehouse/getfoods");
 
             return View();
         }
@@ -179,7 +179,7 @@ namespace StoreHouseWebApp.Controllers
             }
 
             var component = APIClient.GetRequest<List<StoreHouseViewModel>>(
-                "api/storehouse/getcomponents").FirstOrDefault(rec => rec.Id == foodId);
+                "api/storehouse/getfoods").FirstOrDefault(rec => rec.Id == foodId);
 
             if (component == null)
             {

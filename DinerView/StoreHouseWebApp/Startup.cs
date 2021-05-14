@@ -16,7 +16,6 @@ namespace StoreHouseWebApp
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            APIClient.Connect(configuration);
         }
 
         public IConfiguration Configuration { get; }

@@ -10,9 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DinerBusinessLogic\DinerBusinessLogic.csproj" />
-    <ProjectReference Include="..\DinerViewDatabaseImplement\DinerViewDatabaseImplement.csproj" />
-    <ProjectReference Include="..\DinerViewFileImplement\DinerViewFileImplement.csproj" />
-    <ProjectReference Include="..\DinerViewListImplement\DinerViewListImplement.csproj" />
   </ItemGroup>
 
 </Project>
