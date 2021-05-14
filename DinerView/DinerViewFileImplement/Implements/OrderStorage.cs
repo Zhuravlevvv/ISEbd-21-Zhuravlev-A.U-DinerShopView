@@ -13,6 +13,7 @@ namespace DinerViewFileImplement.Implements
         private readonly FileDataListSingleton sourse;
         private Order CreateModel(OrderBindingModel model, Order order)
         {
+            order.ClientId = (int)model.ClientId;
             order.SnackId = model.SnackId;
             order.Count = model.Count;
             order.Sum = model.Sum;
@@ -24,10 +25,12 @@ namespace DinerViewFileImplement.Implements
         }
         private OrderViewModel CreateModel(Order order)
         {
+            Snack snack = sourse.Snacks.FirstOrDefault(rec => rec.Id == order.SnackId);
             return new OrderViewModel
             {
                 Id = order.Id,
-                SnackName = sourse.Snacks.FirstOrDefault(snack => snack.Id == order.SnackId)?.SnackName,
+                ClientId = order.ClientId,
+                SnackName = snack.SnackName,
                 SnackId = order.SnackId,
                 Count = order.Count,
                 Sum = order.Sum,
@@ -50,14 +53,12 @@ namespace DinerViewFileImplement.Implements
             {
                 return null;
             }
-            if (model.DateTo != null && model.DateFrom != null)
-            {
-                return sourse.Orders.Where(rec => rec.DateCreate >= model.DateFrom && rec.DateCreate <= model.DateTo)
-                    .Select(CreateModel).ToList();
-            }
             return sourse.Orders
-                .Where(rec => rec.SnackId.ToString().Contains(model.SnackId.ToString()))
-                .Select(CreateModel).ToList();
+                 .Where(rec => (model.ClientId.HasValue && rec.ClientId == model.ClientId) || (!model.DateFrom.HasValue && !model.DateTo.HasValue && rec.DateCreate == model.DateCreate) ||
+                 (model.DateFrom.HasValue && model.DateTo.HasValue && rec.DateCreate.Date
+                 >= model.DateFrom.Value.Date && rec.DateCreate.Date <= model.DateTo.Value.Date))
+                 .Select(CreateModel)
+                 .ToList();
         }
         public OrderViewModel GetElement(OrderBindingModel model)
         {

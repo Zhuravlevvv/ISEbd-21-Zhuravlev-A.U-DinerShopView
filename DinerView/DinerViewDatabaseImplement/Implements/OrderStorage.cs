@@ -6,6 +6,7 @@ using DinerBusinessLogic.ViewModels;
 using DinerBusinessLogic.BindingModels;
 using System.Linq;
 using DinerViewDatabaseImplement.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DinerViewDatabaseImplement.Implements
 {
@@ -18,13 +19,15 @@ namespace DinerViewDatabaseImplement.Implements
                 return context.Orders.Select(rec => new OrderViewModel
                 {
                     Id = rec.Id,
-                    SnackName = context.Snacks.FirstOrDefault(r => r.Id == rec.SnackId).SnackName,
+                    SnackName = context.Snacks.Include(x => x.Order).FirstOrDefault(r => r.Id == rec.SnackId).SnackName,
                     SnackId = rec.SnackId,
                     Count = rec.Count,
                     Sum = rec.Sum,
                     Status = rec.Status,
                     DateCreate = rec.DateCreate,
-                    DateImplement = rec.DateImplement
+                    DateImplement = rec.DateImplement,
+                    ClientId = rec.ClientId,
+                    ClientFIO = context.Clients.FirstOrDefault(x => x.Id == rec.ClientId).ClientFIO
                 })
                 .ToList();
             }
@@ -35,39 +38,24 @@ namespace DinerViewDatabaseImplement.Implements
             {
                 return null;
             }
-            if (model.DateFrom != null && model.DateTo != null)
-            {
-                using (var context = new DinerViewDatabase())
-                {
-                    return context.Orders
-                    .Where(rec => rec.DateCreate >= model.DateFrom && rec.DateCreate <= model.DateTo)
-                    .Select(rec => new OrderViewModel
-                    {
-                        Id = rec.Id,
-                        SnackName = context.Snacks.FirstOrDefault(r => r.Id == rec.SnackId).SnackName,
-                        SnackId = rec.SnackId,
-                        Count = rec.Count,
-                        Sum = rec.Sum,
-                        Status = rec.Status,
-                        DateCreate = rec.DateCreate,
-                        DateImplement = rec.DateImplement
-                    }).ToList();
-                }              
-            }
+
             using (var context = new DinerViewDatabase())
             {
                 return context.Orders
-                .Where(rec => rec.Id.Equals(model.Id))
+                .Where(rec => (model.ClientId.HasValue && rec.ClientId == model.ClientId) || (!model.DateFrom.HasValue && !model.DateTo.HasValue && rec.DateCreate == model.DateCreate) ||
+                (model.DateFrom.HasValue && model.DateTo.HasValue && rec.DateCreate.Date
+                >= model.DateFrom.Value.Date && rec.DateCreate.Date <= model.DateTo.Value.Date))
                 .Select(rec => new OrderViewModel
                 {
                     Id = rec.Id,
-                    SnackName = context.Snacks.FirstOrDefault(r => r.Id == rec.SnackId).SnackName,
+                    SnackName = context.Snacks.Include(x => x.Order).FirstOrDefault(r => r.Id == rec.SnackId).SnackName,
                     SnackId = rec.SnackId,
                     Count = rec.Count,
                     Sum = rec.Sum,
                     Status = rec.Status,
                     DateCreate = rec.DateCreate,
-                    DateImplement = rec.DateImplement
+                    DateImplement = rec.DateImplement,
+                    ClientId = rec.ClientId
                 })
                 .ToList();
             }
@@ -86,13 +74,14 @@ namespace DinerViewDatabaseImplement.Implements
                 new OrderViewModel
                 {
                     Id = order.Id,
-                    SnackName = context.Snacks.FirstOrDefault(r => r.Id == order.SnackId).SnackName,
+                    SnackName = context.Snacks.Include(x => x.Order).FirstOrDefault(r => r.Id == order.SnackId)?.SnackName,
                     SnackId = order.SnackId,
                     Count = order.Count,
                     Sum = order.Sum,
                     Status = order.Status,
                     DateCreate = order.DateCreate,
-                    DateImplement = order.DateImplement
+                    DateImplement = order.DateImplement,
+                    ClientId = order.ClientId
                 } :
                 null;
             }
@@ -144,6 +133,7 @@ namespace DinerViewDatabaseImplement.Implements
             order.Status = model.Status;
             order.DateCreate = model.DateCreate;
             order.DateImplement = model.DateImplement;
+            order.ClientId = (int)model.ClientId;
             return order;
         }
     }
