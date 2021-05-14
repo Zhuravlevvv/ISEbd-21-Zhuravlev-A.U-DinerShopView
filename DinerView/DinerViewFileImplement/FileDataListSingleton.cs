@@ -23,14 +23,12 @@ namespace DinerViewFileImplement
         public List<Snack> Snacks { get; set; }
         public List<Order> Orders { get; set; }
         public List<Client> Clients { get; set; }
-        public List<StoreHouse> StoreHouses { get; set; }
 
         private FileDataListSingleton()
         {
             Foods = LoadFoods();
             Snacks = LoadSnacks();
             Orders = LoadOrders();
-            StoreHouses = LoadStoreHouses();
             Clients = LoadClients();
         }
         public static FileDataListSingleton GetInstance()
@@ -47,7 +45,6 @@ namespace DinerViewFileImplement
             SaveSnacks();
             SaveOrders();
             SaveClients();
-            SaveStoreHouses();
         }
         private List<Food> LoadFoods()
         {
@@ -164,35 +161,7 @@ namespace DinerViewFileImplement
             }
             return list;
         }
-        private List<StoreHouse> LoadStoreHouses()
-        {
-            var list = new List<StoreHouse>();
-            if (File.Exists(StoreHouseFileName))
-            {
-                XDocument xDocument = XDocument.Load(StoreHouseFileName);
-                var xElements = xDocument.Root.Elements("StoreHouse").ToList();
-                foreach (var elem in xElements)
-                {
-                    var storeFood = new Dictionary<int, int>();
-                    foreach (var food in
-                    elem.Element("StoreHouseFoods").Elements("StoreHouseFood").ToList())
-                    {
-                        storeFood.Add(Convert.ToInt32(food.Element("Key").Value),
-                        Convert.ToInt32(food.Element("Value").Value));
-                    }
-                    list.Add(new StoreHouse
-                    {
-                        Id = Convert.ToInt32(elem.Attribute("Id").Value),
-                        StoreHouseName = elem.Element("StoreHouseName").Value,
-                        ResponsiblePersonFCS = elem.Element("ResponsiblePersonFCS").Value,
-                        DateCreate = Convert.ToDateTime(elem.Element("DateCreate").Value),
-                        StoreHouseFoods = storeFood
-                    });
-                }
-            }
-            return list;
-        }
-
+      
         private void SaveFoods()
         {
             if (Foods != null)
@@ -208,31 +177,7 @@ namespace DinerViewFileImplement
                 xDocument.Save(FoodFileName);
             }
         }
-        private void SaveStoreHouses()
-        {
-            if (StoreHouses != null)
-            {
-                var xElement = new XElement("StoreHouses");
-                foreach (var storehouse in StoreHouses)
-                {
-                    var compElement = new XElement("StoreHouseFoods");
-                    foreach (var food in storehouse.StoreHouseFoods)
-                    {
-                        compElement.Add(new XElement("StoreHoseFoods",
-                        new XElement("Key", food.Key),
-                        new XElement("Value", food.Value)));
-                    }
-                    xElement.Add(new XElement("StoreHouse",
-                    new XAttribute("Id", storehouse.Id),
-                    new XElement("StoreHouseName", storehouse.StoreHouseName),
-                    new XElement("ResponsiblePersonFCS", storehouse.ResponsiblePersonFCS),
-                    new XElement("DateCreate", storehouse.DateCreate),
-                    compElement));
-                }
-                XDocument xDocument = new XDocument(xElement);
-                xDocument.Save(StoreHouseFileName);
-            }
-        }
+        
         private void SaveSnacks()
         {
             if (Snacks != null)
