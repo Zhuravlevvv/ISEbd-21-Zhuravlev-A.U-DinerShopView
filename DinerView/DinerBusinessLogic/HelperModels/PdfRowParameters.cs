@@ -14,6 +14,7 @@ namespace DinerBusinessLogic.HelperModels
 
         public string Style { get; set; }
 
+        public ParagraphAlignment ParagraphAligment { get; set; }
         public ParagraphAlignment ParagraphAlignment { get; set; }
     }
 }

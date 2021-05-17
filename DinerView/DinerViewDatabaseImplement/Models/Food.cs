@@ -11,5 +11,7 @@ namespace DinerViewDatabaseImplement.Models
         public string FoodName { get; set; }
         [ForeignKey("FoodId")]
         public virtual List<SnackFood> SnackFoods { get; set; }
+        [ForeignKey("FoodId")]
+        public virtual List<StoreHouseFood> StoreHouseFoods { get; set; }
     }
 }

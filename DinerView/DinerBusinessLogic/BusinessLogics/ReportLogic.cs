@@ -12,17 +12,17 @@ namespace DinerBusinessLogic.BusinessLogics
 {
     public class ReportLogic
     {
-        private readonly IFoodStorage _foodStorage;
-
         private readonly ISnackStorage _snackStorage;
 
         private readonly IOrderStorage _orderStorage;
 
-        public ReportLogic(ISnackStorage snackStorage, IFoodStorage
-        foodStorage, IOrderStorage orderStorage)
+        private readonly IStoreHouseStorage _storeHouseStorage;
+
+        public ReportLogic(ISnackStorage snackStorage, IStoreHouseStorage
+        storeHouseStorage, IOrderStorage orderStorage)
         {
             _snackStorage = snackStorage;
-            _foodStorage = foodStorage;
+            _storeHouseStorage = storeHouseStorage;
             _orderStorage = orderStorage;
         }
         /// <summary>
@@ -31,7 +31,6 @@ namespace DinerBusinessLogic.BusinessLogics
         /// <returns></returns>
         public List<ReportFoodSnackViewModel> GetFoodSnack()
         {
-            var foods = _foodStorage.GetFullList();
             var snacks = _snackStorage.GetFullList();
             var list = new List<ReportFoodSnackViewModel>();
             foreach (var snack in snacks)
@@ -42,14 +41,34 @@ namespace DinerBusinessLogic.BusinessLogics
                     Foods = new List<Tuple<string, int>>(),
                     TotalCount = 0
                 };
-                foreach (var food in foods)
+                foreach (var food in snack.SnackFoods)
+                {  
+                    record.Foods.Add(new Tuple<string, int>(food.Value.Item1,
+                    food.Value.Item2));
+                    record.TotalCount += food.Value.Item2;       
+                }
+                list.Add(record);
+            }
+            return list;
+        }
+        public List<ReportStoreHouseFoodsViewModel> GetStoreHouseFood()
+        {
+            var storeHouses = _storeHouseStorage.GetFullList();
+
+            var list = new List<ReportStoreHouseFoodsViewModel>();
+
+            foreach (var storeHouse in storeHouses)
+            {
+                var record = new ReportStoreHouseFoodsViewModel
                 {
-                    if (snack.SnackFoods.ContainsKey(food.Id))
-                    {
-                        record.Foods.Add(new Tuple<string, int>(food.FoodName,
-                        snack.SnackFoods[food.Id].Item2));
-                        record.TotalCount += snack.SnackFoods[food.Id].Item2;
-                    }
+                    StoreHouseName = storeHouse.StoreHouseName,
+                    Foods = new List<Tuple<string, int>>(),
+                    TotalCount = 0
+                };
+                foreach (var component in storeHouse.StoreHouseFoods)
+                {
+                    record.Foods.Add(new Tuple<string, int>(component.Value.Item1, component.Value.Item2));
+                    record.TotalCount += component.Value.Item2;
                 }
                 list.Add(record);
             }
@@ -76,6 +95,19 @@ namespace DinerBusinessLogic.BusinessLogics
                 Status = ((OrderStatus)Enum.Parse(typeof(OrderStatus), x.Status.ToString())).ToString()
             })
             .ToList();
+        }
+        public List<ReportOrderByDateViewModel> GetOrdersInfo()
+        {
+            return _orderStorage.GetFullList()
+                .GroupBy(order => order.DateCreate
+                .ToShortDateString())
+                .Select(rec => new ReportOrderByDateViewModel
+                {
+                    Date = Convert.ToDateTime(rec.Key),
+                    Count = rec.Count(),
+                    Sum = rec.Sum(order => order.Sum)
+                })
+                .ToList();
         }
         /// <summary>
         /// Сохранение изделия в файл-Word
@@ -116,6 +148,33 @@ namespace DinerBusinessLogic.BusinessLogics
                 DateFrom = model.DateFrom.Value,
                 DateTo = model.DateTo.Value,
                 Orders = GetOrders(model)
+            });
+        }
+        public void SaveStoreHouseFoodsToExcel(ReportBindingModel model)
+        {
+            SaveToExcel.CreateDocForStoreHouse(new ExcelInfoForStoreHouse
+            {
+                FileName = model.FileName,
+                Title = "Список складов",
+                StoreHouseFoods = GetStoreHouseFood()
+            });
+        }
+        public void SaveOrdersInfoToPdfFile(ReportBindingModel model)
+        {
+            SaveToPdf.CreateDocForStoreHouse(new PdfInfoForOrder
+            {
+                FileName = model.FileName,
+                Title = "Список заказов",
+                Orders = GetOrdersInfo()
+            });
+        }
+        public void SaveStoreHousesToWordFile(ReportBindingModel model)
+        {
+            SaveToWord.CreateDocForStoreHouse(new WordInfoForStoreHouse
+            {
+                FileName = model.FileName,
+                Title = "Список складов",
+                StoreHouses = _storeHouseStorage.GetFullList()
             });
         }
     }
