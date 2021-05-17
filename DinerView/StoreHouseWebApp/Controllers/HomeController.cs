@@ -157,7 +157,7 @@ namespace StoreHouseWebApp.Controllers
                 return Redirect("~/Home/Enter");
             }
             ViewBag.StoreHouses = APIClient.GetRequest<List<StoreHouseViewModel>>("api/storehouse/getstorehouses");
-            ViewBag.Components = APIClient.GetRequest<List<FoodViewModel>>($"api/storehouse/getfoods");
+            ViewBag.Foods = APIClient.GetRequest<List<FoodViewModel>>($"api/storehouse/getfoods");
 
             return View();
         }
@@ -183,7 +183,7 @@ namespace StoreHouseWebApp.Controllers
 
             if (component == null)
             {
-                throw new Exception("Компонент не найден");
+                throw new Exception("Продукт не найден");
             }
 
             APIClient.PostRequest("api/storehouse/replenishment", new StoreHouseReplenishmentBindingModel
