@@ -18,12 +18,14 @@ namespace DinerViewFileImplement
         private readonly string OrderFileName = "Order.xml";
         private readonly string ClientFileName = "Client.xml";
         private readonly string ImplementerFileName = "Implementer.xml";
+        private readonly string StoreHouseFileName = "StoreHouse.xml";
 
         public List<Food> Foods { get; set; }
         public List<Snack> Snacks { get; set; }
         public List<Order> Orders { get; set; }
         public List<Client> Clients { get; set; }
         public List<Implementer> Implementers { get; set; }
+        public List<StoreHouse> StoreHouses { get; set; }
 
         private FileDataListSingleton()
         {
@@ -32,6 +34,7 @@ namespace DinerViewFileImplement
             Orders = LoadOrders();
             Clients = LoadClients();
             Implementers = LoadImplementers();
+            StoreHouses = LoadStoreHouses();
         }
         public static FileDataListSingleton GetInstance()
         {
@@ -48,6 +51,7 @@ namespace DinerViewFileImplement
             SaveOrders();
             SaveClients();
             SaveImplementers();
+            SaveStoreHouses();
         }
         private List<Food> LoadFoods()
         {
@@ -178,6 +182,36 @@ namespace DinerViewFileImplement
             }
             return list;
         }
+        private List<StoreHouse> LoadStoreHouses()
+        {
+            var list = new List<StoreHouse>();
+
+            if (File.Exists(StoreHouseFileName))
+            {
+                XDocument xDocument = XDocument.Load(StoreHouseFileName);
+
+                var xElements = xDocument.Root.Elements("StoreHouse").ToList();
+
+                foreach (var elem in xElements)
+                {
+                    var storeHouseFoods = new Dictionary<int, int>();
+                    foreach (var component in elem.Element("StoreHouseFoods").Elements("StoreHouseComponent").ToList())
+                    {
+                        storeHouseFoods.Add(Convert.ToInt32(component.Element("Key").Value),
+                            Convert.ToInt32(component.Element("Value").Value));
+                    }
+                    list.Add(new StoreHouse
+                    {
+                        Id = Convert.ToInt32(elem.Attribute("Id").Value),
+                        StoreHouseName = elem.Element("StoreHouseName").Value,
+                        ResponsiblePersonFCS = elem.Element("ResponsiblePersonFCS").Value,
+                        StoreHouseFoods = storeHouseFoods,
+                        DateCreate = Convert.ToDateTime(elem.Element("DateCreate").Value)
+                    });
+                }
+            }
+            return list;
+        }
         private void SaveFoods()
         {
             if (Foods != null)
@@ -273,6 +307,32 @@ namespace DinerViewFileImplement
                 }
                 XDocument xDocument = new XDocument(xElement);
                 xDocument.Save(ImplementerFileName);
+            }
+        }
+        private void SaveStoreHouses()
+        {
+            if (StoreHouses != null)
+            {
+                var xElement = new XElement("StoreHouses");
+
+                foreach (var storeHouse in StoreHouses)
+                {
+                    var compElement = new XElement("StoreHouseFoods");
+                    foreach (var component in storeHouse.StoreHouseFoods)
+                    {
+                        compElement.Add(new XElement("StoreHouseFoods",
+                            new XElement("Key", component.Key),
+                            new XElement("Value", component.Value)));
+                    }
+                    xElement.Add(new XElement("StoreHouse",
+                        new XAttribute("Id", storeHouse.Id),
+                        new XElement("StoreHouseName", storeHouse.StoreHouseName),
+                        new XElement("ResponsiblePersonFCS", storeHouse.ResponsiblePersonFCS),
+                        new XElement("DateCreate", storeHouse.DateCreate),
+                        compElement));
+                }
+                XDocument xDocument = new XDocument(xElement);
+                xDocument.Save(StoreHouseFileName);
             }
         }
     }

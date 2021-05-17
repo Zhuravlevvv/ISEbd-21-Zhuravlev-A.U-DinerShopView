@@ -48,13 +48,14 @@ namespace DinerBusinessLogic.BusinessLogics
                 _implementerStorage.Insert(model);
             }
         }
+
         public void Delete(ImplementerBindingModel model)
         {
-            var element = _implementerStorage.GetElement(new ImplementerBindingModel
+            var implementer = _implementerStorage.GetElement(new ImplementerBindingModel
             {
                 Id = model.Id
             });
-            if (element == null)
+            if (implementer == null)
             {
                 throw new Exception("Исполнитель не найден");
             }

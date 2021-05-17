@@ -35,6 +35,7 @@ namespace DinerView
            HierarchicalLifetimeManager());
             currentContainer.RegisterType<IImplementerStorage, ImplementerStorage>(new
             HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IStoreHouseStorage, StoreHouseStorage>(new HierarchicalLifetimeManager());
 
             currentContainer.RegisterType<FoodLogic>(new
            HierarchicalLifetimeManager());
@@ -45,6 +46,7 @@ namespace DinerView
             return currentContainer;
             currentContainer.RegisterType<ClientLogic>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<WorkModeling>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<StoreHouseLogic>(new HierarchicalLifetimeManager());
         }
     }
 }
