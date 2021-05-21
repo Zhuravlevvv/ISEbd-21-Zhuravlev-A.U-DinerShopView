@@ -206,12 +206,12 @@ namespace DinerViewDatabaseImplement.Implements
             return storeHouse;
         }
 
-        public bool CheckAndTake(int PackageId, int Count)
+        public bool CheckAndTake(int SnackId, int Count)
         {
             using (var context = new DinerViewDatabase())
             {
                 var list = GetFullList();
-                var DCount = context.SnackFoods.Where(rec => rec.SnackId == PackageId)
+                var DCount = context.SnackFoods.Where(rec => rec.SnackId == SnackId)
                     .ToDictionary(rec => rec.FoodId, rec => rec.Count * Count);
 
                 using (var transaction = context.Database.BeginTransaction())
