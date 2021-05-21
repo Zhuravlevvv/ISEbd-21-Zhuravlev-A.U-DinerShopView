@@ -138,41 +138,69 @@ namespace DinerViewFileImplement.Implements
             };
         }
 
-        public bool CheckAndTake(int count, Dictionary<int, (string, int)> foods)
+        public bool CheckAndTake(int SnackId, int Count)
         {
-            foreach (var food in foods)
+            var list = GetFullList();
+            var DCount = source.Snacks.FirstOrDefault(rec => rec.Id == SnackId).SnackFoods;
+            DCount = DCount.ToDictionary(rec => rec.Key, rec => rec.Value * Count);
+            Dictionary<int, int> Have = new Dictionary<int, int>();
+
+            // считаем сколько у нас всего нужных компонентов
+            foreach (var view in list)
             {
-                int requiredCount = food.Value.Item2 * count;
-                int availableCount = source.StoreHouses
-                    .Where(rec => rec.StoreHouseFoods.ContainsKey(food.Key))
-                    .Sum(rec => rec.StoreHouseFoods[food.Key]);
-                if (availableCount < requiredCount)
+                foreach (var d in view.StoreHouseFoods)
+                {
+                    int key = d.Key;
+                    if (DCount.ContainsKey(key))
+                    {
+                        if (Have.ContainsKey(key))
+                        {
+                            Have[key] += d.Value.Item2;
+                        }
+                        else
+                        {
+                            Have.Add(key, d.Value.Item2);
+                        }
+                    }
+                }
+            }
+
+            //проверяем хватает ли компонентов
+            foreach (var key in Have.Keys)
+            {
+                if (DCount[key] > Have[key])
                 {
                     return false;
                 }
             }
-            foreach (var food in foods)
+
+            // вычитаем со складов компоненты
+            foreach (var view in list)
             {
-                int requiredCount = food.Value.Item2 * count;
-                List<StoreHouse> availableStoreHouses = source.StoreHouses
-                    .Where(rec => rec.StoreHouseFoods.ContainsKey(food.Key))
-                    .ToList();
-                foreach (var storeHouse in availableStoreHouses)
+                var storehouseFoods = view.StoreHouseFoods;
+                foreach (var key in view.StoreHouseFoods.Keys.ToArray())
                 {
-                    int availableCount = storeHouse.StoreHouseFoods[food.Key];
-                    if (availableCount <= requiredCount)
+                    var value = view.StoreHouseFoods[key];
+                    if (DCount.ContainsKey(key))
                     {
-                        requiredCount = requiredCount - availableCount;
-                        storeHouse.StoreHouseFoods.Remove(food.Key);
-                    }
-                    else
-                    {
-                        storeHouse.StoreHouseFoods[food.Key] -= requiredCount;
-                        requiredCount = 0;
-                    }
-                    if (requiredCount == 0)
-                    {
-                        break;
+                        if (value.Item2 > DCount[key])
+                        {
+                            storehouseFoods[key] = (value.Item1, value.Item2 - DCount[key]);
+                            DCount[key] = 0;
+                        }
+                        else
+                        {
+                            storehouseFoods[key] = (value.Item1, 0);
+                            DCount[key] -= value.Item2;
+                        }
+                        Update(new StoreHouseBindingModel
+                        {
+                            Id = view.Id,
+                            DateCreate = view.DateCreate,
+                            ResponsiblePersonFCS = view.ResponsiblePersonFCS,
+                            StoreHouseName = view.StoreHouseName,
+                            StoreHouseFoods = storehouseFoods
+                        });
                     }
                 }
             }

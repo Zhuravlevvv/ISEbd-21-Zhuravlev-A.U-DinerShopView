@@ -11,19 +11,22 @@ namespace DinerViewListImplement.Implements
     public class StoreHouseStorage : IStoreHouseStorage
     {
         private readonly DataListSingleton source;
+
         public StoreHouseStorage()
         {
             source = DataListSingleton.GetInstance();
         }
+
         public List<StoreHouseViewModel> GetFullList()
         {
             List<StoreHouseViewModel> result = new List<StoreHouseViewModel>();
-            foreach (var storeHouse in source.Storehouses)
+            foreach (var storehouse in source.Storehouses)
             {
-                result.Add(CreateModel(storeHouse));
+                result.Add(CreateModel(storehouse));
             }
             return result;
         }
+
         public List<StoreHouseViewModel> GetFilteredList(StoreHouseBindingModel model)
         {
             if (model == null)
@@ -31,64 +34,66 @@ namespace DinerViewListImplement.Implements
                 return null;
             }
             List<StoreHouseViewModel> result = new List<StoreHouseViewModel>();
-            foreach (var storeHouse in source.Storehouses)
+            foreach (var storehouse in source.Storehouses)
             {
-                if (storeHouse.StoreHouseName.Contains(model.StoreHouseName))
+                if (storehouse.StoreHouseName.Contains(model.StoreHouseName))
                 {
-                    result.Add(CreateModel(storeHouse));
+                    result.Add(CreateModel(storehouse));
                 }
             }
             return result;
         }
+
         public StoreHouseViewModel GetElement(StoreHouseBindingModel model)
         {
             if (model == null)
             {
                 return null;
             }
-            foreach (var storeHouse in source.Storehouses)
+            foreach (var storehouse in source.Storehouses)
             {
-                if (storeHouse.Id == model.Id || storeHouse.StoreHouseName ==
-                model.StoreHouseName)
+                if (storehouse.Id == model.Id || storehouse.StoreHouseName.Equals(model.StoreHouseName))
                 {
-                    return CreateModel(storeHouse);
+                    return CreateModel(storehouse);
                 }
             }
             return null;
         }
+
         public void Insert(StoreHouseBindingModel model)
         {
-            StoreHouse tempStoreHouse = new StoreHouse
+            StoreHouse tempStorehouse = new StoreHouse
             {
                 Id = 1,
-                StoreHouseFoods = new Dictionary<int, int>(),
-                DateCreate = DateTime.Now
+                StoreHouseFoods = new Dictionary<int, int>()
             };
-            foreach (var storeHouse in source.Storehouses)
+            foreach (var storehouse in source.Storehouses)
             {
-                if (storeHouse.Id >= tempStoreHouse.Id)
+                if (storehouse.Id >= tempStorehouse.Id)
                 {
-                    tempStoreHouse.Id = storeHouse.Id + 1;
+                    tempStorehouse.Id = storehouse.Id + 1;
                 }
             }
-            source.Storehouses.Add(CreateModel(model, tempStoreHouse));
+            source.Storehouses.Add(CreateModel(model, tempStorehouse));
         }
+
         public void Update(StoreHouseBindingModel model)
         {
-            StoreHouse tempStoreHouse = null;
-            foreach (var storeHouse in source.Storehouses)
+            StoreHouse tempStorehouse = null;
+            foreach (var storehouse in source.Storehouses)
             {
-                if (storeHouse.Id == model.Id)
+                if (storehouse.Id == model.Id)
                 {
-                    tempStoreHouse = storeHouse;
+                    tempStorehouse = storehouse;
                 }
             }
-            if (tempStoreHouse == null)
+            if (tempStorehouse == null)
             {
                 throw new Exception("Элемент не найден");
             }
-            CreateModel(model, tempStoreHouse);
+            CreateModel(model, tempStorehouse);
         }
+
         public void Delete(StoreHouseBindingModel model)
         {
             for (int i = 0; i < source.Storehouses.Count; ++i)
@@ -101,10 +106,12 @@ namespace DinerViewListImplement.Implements
             }
             throw new Exception("Элемент не найден");
         }
+
         private StoreHouse CreateModel(StoreHouseBindingModel model, StoreHouse storeHouse)
         {
             storeHouse.StoreHouseName = model.StoreHouseName;
             storeHouse.ResponsiblePersonFCS = model.ResponsiblePersonFCS;
+            storeHouse.DateCreate = model.DateCreate;
             // удаляем убранные
             foreach (var key in storeHouse.StoreHouseFoods.Keys.ToList())
             {
@@ -114,37 +121,38 @@ namespace DinerViewListImplement.Implements
                 }
             }
             // обновляем существуюущие и добавляем новые
-            foreach (var food in model.StoreHouseFoods)
+            foreach (var component in model.StoreHouseFoods)
             {
-                if (storeHouse.StoreHouseFoods.ContainsKey(food.Key))
+                if (storeHouse.StoreHouseFoods.ContainsKey(component.Key))
                 {
-                    storeHouse.StoreHouseFoods[food.Key] =
-                    model.StoreHouseFoods[food.Key].Item2;
+                    storeHouse.StoreHouseFoods[component.Key] =
+                    model.StoreHouseFoods[component.Key].Item2;
                 }
                 else
                 {
-                    storeHouse.StoreHouseFoods.Add(food.Key,
-                    model.StoreHouseFoods[food.Key].Item2);
+                    storeHouse.StoreHouseFoods.Add(component.Key,
+                    model.StoreHouseFoods[component.Key].Item2);
                 }
             }
             return storeHouse;
         }
+
         private StoreHouseViewModel CreateModel(StoreHouse storeHouse)
         {
-            // требуется дополнительно получить список компонентов для изделия с названиями и их количество
-            Dictionary<int, (string, int)> storeHouseFoods = new Dictionary<int, (string, int)>();
-            foreach (var storeHouseFood in storeHouse.StoreHouseFoods)
+            Dictionary<int, (string, int)> storehouseFoods = new
+            Dictionary<int, (string, int)>();
+            foreach (var pc in storeHouse.StoreHouseFoods)
             {
-                string foodName = string.Empty;
-                foreach (var food in source.Foods)
+                string componentName = string.Empty;
+                foreach (var component in source.Foods)
                 {
-                    if (storeHouseFood.Key == food.Id)
+                    if (pc.Key == component.Id)
                     {
-                        foodName = food.FoodName;
+                        componentName = component.FoodName;
                         break;
                     }
                 }
-                storeHouseFoods.Add(storeHouseFood.Key, (foodName, storeHouseFood.Value));
+                storehouseFoods.Add(pc.Key, (componentName, pc.Value));
             }
             return new StoreHouseViewModel
             {
@@ -152,22 +160,11 @@ namespace DinerViewListImplement.Implements
                 StoreHouseName = storeHouse.StoreHouseName,
                 ResponsiblePersonFCS = storeHouse.ResponsiblePersonFCS,
                 DateCreate = storeHouse.DateCreate,
-                StoreHouseFoods = storeHouseFoods
+                StoreHouseFoods = storehouseFoods
             };
         }
-        public void Print()
-        {
-            foreach (StoreHouse storehouse in source.Storehouses)
-            {
-                Console.WriteLine(storehouse.StoreHouseName + " " + storehouse.ResponsiblePersonFCS + " " + storehouse.DateCreate);
-                foreach (KeyValuePair<int, int> keyValue in storehouse.StoreHouseFoods)
-                {
-                    string foodName = source.Foods.FirstOrDefault(component => component.Id == keyValue.Key).FoodName;
-                    Console.WriteLine(foodName + " " + keyValue.Value);
-                }
-            }
-        }
-        public bool CheckAndTake(int count, Dictionary<int, (string, int)> foods)
+
+        public bool CheckAndTake(int SnackId, int Count)
         {
             throw new NotImplementedException();
         }

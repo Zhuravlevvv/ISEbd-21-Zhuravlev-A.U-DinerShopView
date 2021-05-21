@@ -19,6 +19,8 @@ namespace DinerBusinessLogic.BindingModels
         [DataMember]
         public bool? FreeOrders { get; set; }
         [DataMember]
+        public bool? NeedComponentOrders { get; set; }
+        [DataMember]
         public int Count { get; set; }
         [DataMember]
         public decimal Sum { get; set; }

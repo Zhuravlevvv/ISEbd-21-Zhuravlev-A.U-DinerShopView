@@ -16,14 +16,7 @@ namespace DinerViewDatabaseImplement.Implements
         {
             using (var context = new DinerViewDatabase())
             {
-                return context.Implementers.Select(rec => new ImplementerViewModel
-                {
-                    Id = rec.Id,
-                    ImplementerFIO = rec.ImplementerFIO,
-                    WorkingTime = rec.WorkingTime,
-                    PauseTime = rec.PauseTime
-                })
-                .ToList();
+                return context.Implementers.Select(CreateModel).ToList();
             }
         }
 
@@ -35,16 +28,9 @@ namespace DinerViewDatabaseImplement.Implements
             }
             using (var context = new DinerViewDatabase())
             {
-                return context.Implementers.Include(x => x.Order)
-                .Where(rec => rec.ImplementerFIO == model.ImplementerFIO)
-                .Select(rec => new ImplementerViewModel
-                {
-                    Id = rec.Id,
-                    ImplementerFIO = rec.ImplementerFIO,
-                    WorkingTime = rec.WorkingTime,
-                    PauseTime = rec.PauseTime
-                })
-                .ToList();
+                return context.Implementers
+                    .Where(rec => rec.ImplementerFIO.Contains(model.ImplementerFIO))
+                    .Select(CreateModel).ToList();
             }
         }
 
