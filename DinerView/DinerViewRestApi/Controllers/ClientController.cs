@@ -64,6 +64,18 @@ namespace DinerViewRestApi.Controllers
                 throw new Exception($"Пароль длиной от {_passwordMinLength} до {_passwordMaxLength }" +
                     $" должен состоять и из цифр, букв и небуквенных символов");
             }
+
+        }
+
+        [HttpGet]
+        public PageViewModel GetPage(int pageSize, int page, int ClientId)
+        {
+            return new PageViewModel(_mailLogic.Count(), page, pageSize, _mailLogic.GetMessagesForPage(new MessageInfoBindingModel
+            {
+                Page = page,
+                PageSize = pageSize,
+                ClientId = ClientId
+            }));
         }
     }
 }

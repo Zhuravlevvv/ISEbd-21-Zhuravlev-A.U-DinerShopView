@@ -31,12 +31,15 @@ namespace DinerViewRestApi
         {
             services.AddTransient<IClientStorage, ClientStorage>();
             services.AddTransient<IOrderStorage, OrderStorage>();
+            services.AddTransient<IFoodStorage, FoodStorage>();
             services.AddTransient<ISnackStorage, SnackStorage>();
+            services.AddTransient<IStoreHouseStorage, StoreHouseStorage>();
             services.AddTransient<IMessageInfoStorage, MessageInfoStorage>();
             services.AddTransient<OrderLogic>();
             services.AddTransient<ClientLogic>();
             services.AddTransient<SnackLogic>();
             services.AddTransient<MailLogic>();
+            services.AddTransient<StoreHouseLogic>();
             MailLogic.MailConfig(new MailConfig
             {
                 SmtpClientHost = "smtp.yandex.ru",
@@ -44,6 +47,7 @@ namespace DinerViewRestApi
                 MailLogin = "zhuravlev1337.73@yandex.ru",
                 MailPassword = "zhura1337228",
             });
+            services.AddTransient<FoodLogic>();
             services.AddControllers().AddNewtonsoftJson();
 
         }

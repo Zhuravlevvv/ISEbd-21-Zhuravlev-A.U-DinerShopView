@@ -8,7 +8,7 @@ using DinerViewFileImplement.Models;
 
 namespace DinerViewFileImplement.Implements
 {
-    public class MessageInfoStorage : IMessageInfoStorage
+    public class MessageInfoStorage 
     {
         private readonly FileDataListSingleton source;
 

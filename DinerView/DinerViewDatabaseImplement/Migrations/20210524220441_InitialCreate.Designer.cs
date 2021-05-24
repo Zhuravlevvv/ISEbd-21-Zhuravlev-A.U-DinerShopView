@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DinerViewDatabaseImplement.Migrations
 {
     [DbContext(typeof(DinerViewDatabase))]
-    [Migration("20210518081442_InitialCreaate")]
-    partial class InitialCreaate
+    [Migration("20210524220441_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -81,6 +81,33 @@ namespace DinerViewDatabaseImplement.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Implementers");
+                });
+
+            modelBuilder.Entity("DinerViewDatabaseImplement.Models.MessageInfo", b =>
+                {
+                    b.Property<string>("MessageId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Body")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ClientId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateDelivery")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SenderName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Subject")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MessageId");
+
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("MessageInfoes");
                 });
 
             modelBuilder.Entity("DinerViewDatabaseImplement.Models.Order", b =>
@@ -215,6 +242,13 @@ namespace DinerViewDatabaseImplement.Migrations
                     b.HasIndex("StoreHouseId");
 
                     b.ToTable("StoreHouseFoods");
+                });
+
+            modelBuilder.Entity("DinerViewDatabaseImplement.Models.MessageInfo", b =>
+                {
+                    b.HasOne("DinerViewDatabaseImplement.Models.Client", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId");
                 });
 
             modelBuilder.Entity("DinerViewDatabaseImplement.Models.Order", b =>

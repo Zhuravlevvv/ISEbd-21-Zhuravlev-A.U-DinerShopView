@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 namespace SoftwareInstallingListImplements.Implements
 {
-    public class MessageInfoStorage : IMessageInfoStorage
+    public class MessageInfoStorage 
     {
         private readonly DataListSingleton source;
 
@@ -80,5 +80,6 @@ namespace SoftwareInstallingListImplements.Implements
             }
             source.MessageInfoes.Add(CreateModel(model, tempMessageInfo));
         }
+        
     }
 }

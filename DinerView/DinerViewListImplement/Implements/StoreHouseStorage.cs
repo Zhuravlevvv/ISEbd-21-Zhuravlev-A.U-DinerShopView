@@ -20,7 +20,7 @@ namespace DinerViewListImplement.Implements
         public List<StoreHouseViewModel> GetFullList()
         {
             List<StoreHouseViewModel> result = new List<StoreHouseViewModel>();
-            foreach (var storehouse in source.Storehouses)
+            foreach (var storehouse in source.StoreHouses)
             {
                 result.Add(CreateModel(storehouse));
             }
@@ -34,7 +34,7 @@ namespace DinerViewListImplement.Implements
                 return null;
             }
             List<StoreHouseViewModel> result = new List<StoreHouseViewModel>();
-            foreach (var storehouse in source.Storehouses)
+            foreach (var storehouse in source.StoreHouses)
             {
                 if (storehouse.StoreHouseName.Contains(model.StoreHouseName))
                 {
@@ -50,7 +50,7 @@ namespace DinerViewListImplement.Implements
             {
                 return null;
             }
-            foreach (var storehouse in source.Storehouses)
+            foreach (var storehouse in source.StoreHouses)
             {
                 if (storehouse.Id == model.Id || storehouse.StoreHouseName.Equals(model.StoreHouseName))
                 {
@@ -67,20 +67,20 @@ namespace DinerViewListImplement.Implements
                 Id = 1,
                 StoreHouseFoods = new Dictionary<int, int>()
             };
-            foreach (var storehouse in source.Storehouses)
+            foreach (var storehouse in source.StoreHouses)
             {
                 if (storehouse.Id >= tempStorehouse.Id)
                 {
                     tempStorehouse.Id = storehouse.Id + 1;
                 }
             }
-            source.Storehouses.Add(CreateModel(model, tempStorehouse));
+            source.StoreHouses.Add(CreateModel(model, tempStorehouse));
         }
 
         public void Update(StoreHouseBindingModel model)
         {
             StoreHouse tempStorehouse = null;
-            foreach (var storehouse in source.Storehouses)
+            foreach (var storehouse in source.StoreHouses)
             {
                 if (storehouse.Id == model.Id)
                 {
@@ -96,11 +96,11 @@ namespace DinerViewListImplement.Implements
 
         public void Delete(StoreHouseBindingModel model)
         {
-            for (int i = 0; i < source.Storehouses.Count; ++i)
+            for (int i = 0; i < source.StoreHouses.Count; ++i)
             {
-                if (source.Storehouses[i].Id == model.Id)
+                if (source.StoreHouses[i].Id == model.Id)
                 {
-                    source.Storehouses.RemoveAt(i);
+                    source.StoreHouses.RemoveAt(i);
                     return;
                 }
             }

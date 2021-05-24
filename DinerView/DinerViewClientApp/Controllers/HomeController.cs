@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using DinerBusinessLogic.ViewModels;
 using DinerBusinessLogic.BindingModels;
 using DinerViewClientApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DinerViewClientApp.Controllers
 {
@@ -134,13 +135,15 @@ namespace DinerViewClientApp.Controllers
             Response.Redirect("Index");
         }
 
-        public IActionResult Mails()
+        public IActionResult Mails(int page = 1)
         {
             if (Program.Client == null)
             {
                 return Redirect("~/Home/Enter");
             }
-            return View(APIClient.GetRequest<List<MessageInfoViewModel>>($"api/client/GetMessages?clientId={Program.Client.Id}"));
+            int pageSize = 7;   // количество элементов на странице            
+            return View(APIClient.GetRequest<PageViewModel>($"api/client/GetPage?pageSize={pageSize}" +
+                $"&page={page}&ClientId={Program.Client.Id}"));
         }
 
         [HttpPost]

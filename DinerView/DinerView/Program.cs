@@ -57,6 +57,8 @@ namespace DinerView
            HierarchicalLifetimeManager());
             currentContainer.RegisterType<IMessageInfoStorage, MessageInfoStorage>(new
            HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IStoreHouseStorage, StoreHouseStorage>(new
+           HierarchicalLifetimeManager());
             currentContainer.RegisterType<ClientLogic>(new
            HierarchicalLifetimeManager());
             currentContainer.RegisterType<FoodLogic>(new
@@ -69,6 +71,8 @@ namespace DinerView
             currentContainer.RegisterType<ReportLogic>(new
            HierarchicalLifetimeManager());
             currentContainer.RegisterType<WorkModeling>(new
+           HierarchicalLifetimeManager());
+            currentContainer.RegisterType<StoreHouseLogic>(new
            HierarchicalLifetimeManager());
             currentContainer.RegisterType<MailLogic>(new HierarchicalLifetimeManager());
             return currentContainer;

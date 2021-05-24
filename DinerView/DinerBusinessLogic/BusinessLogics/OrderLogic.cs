@@ -13,10 +13,12 @@ namespace DinerBusinessLogic.BusinessLogics
         private readonly IOrderStorage _orderStorage;
         private readonly IClientStorage _clientStorage;
         private readonly object locker = new object();
-        public OrderLogic(IOrderStorage orderStorage, IClientStorage clientStorage)
+        private readonly IStoreHouseStorage _storehouseStorage;
+        public OrderLogic(IOrderStorage orderStorage, IClientStorage clientStorage, IStoreHouseStorage storeHouseStorage)
         {
             _orderStorage = orderStorage;
             _clientStorage = clientStorage;
+            _storehouseStorage = storeHouseStorage;
         }
         public List<OrderViewModel> Read(OrderBindingModel model)
         {
@@ -75,7 +77,7 @@ namespace DinerBusinessLogic.BusinessLogics
                 {
                     throw new Exception("У заказа уже есть исполнитель");
                 }
-                _orderStorage.Update(new OrderBindingModel
+                OrderBindingModel orderModel = new OrderBindingModel
                 {
                     Id = order.Id,
                     SnackId = order.SnackId,
@@ -86,7 +88,13 @@ namespace DinerBusinessLogic.BusinessLogics
                     DateImplement = DateTime.Now,
                     Status = OrderStatus.Выполняется,
                     ClientId = order.ClientId
-                });
+                };
+                if (!_storehouseStorage.CheckAndTake(order.SnackId, order.Count))
+                {
+                    orderModel.Status = OrderStatus.ТребуютсяMатериалы;
+                    orderModel.ImplementerId = null;
+                }
+                _orderStorage.Update(orderModel);
 
                 MailLogic.MailSendAsync(new MailSendInfo
                 {
