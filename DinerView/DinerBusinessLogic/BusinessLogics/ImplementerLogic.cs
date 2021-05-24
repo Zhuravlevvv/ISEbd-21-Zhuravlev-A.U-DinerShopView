@@ -31,7 +31,15 @@ namespace DinerBusinessLogic.BusinessLogics
 
         public void CreateOrUpdate(ImplementerBindingModel model)
         {
-            if (model != null)
+            var implementer = _implementerStorage.GetElement(new ImplementerBindingModel
+            {
+                ImplementerFIO = model.ImplementerFIO
+            });
+            if (implementer != null && implementer.Id != model.Id)
+            {
+                throw new Exception("Уже есть исполнитель с таким именем");
+            }
+            if (model.Id.HasValue)
             {
                 _implementerStorage.Update(model);
             }
@@ -40,13 +48,14 @@ namespace DinerBusinessLogic.BusinessLogics
                 _implementerStorage.Insert(model);
             }
         }
+
         public void Delete(ImplementerBindingModel model)
         {
-            var element = _implementerStorage.GetElement(new ImplementerBindingModel
+            var implementer = _implementerStorage.GetElement(new ImplementerBindingModel
             {
                 Id = model.Id
             });
-            if (element == null)
+            if (implementer == null)
             {
                 throw new Exception("Исполнитель не найден");
             }

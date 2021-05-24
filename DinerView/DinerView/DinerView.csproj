@@ -249,6 +249,12 @@
     <Compile Include="FormMain.designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormReplenishmentStoreHouse.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormReplenishmentStoreHouse.designer.cs">
+      <DependentUpon>FormReplenishmentStoreHouse.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormReportFoodSnack.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -260,6 +266,18 @@
     </Compile>
     <Compile Include="FormReportOrders.Designer.cs">
       <DependentUpon>FormReportOrders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormReportOrdersByDate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormReportOrdersByDate.designer.cs">
+      <DependentUpon>FormReportOrdersByDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormReportStoreHouseFoods.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormReportStoreHouseFoods.designer.cs">
+      <DependentUpon>FormReportStoreHouseFoods.cs</DependentUpon>
     </Compile>
     <Compile Include="FormSnack.cs">
       <SubType>Form</SubType>
@@ -278,6 +296,18 @@
     </Compile>
     <Compile Include="FormSnacks.designer.cs">
       <DependentUpon>FormSnacks.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormStoreHouse.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormStoreHouse.designer.cs">
+      <DependentUpon>FormStoreHouse.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormStoreHouses.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormStoreHouses.designer.cs">
+      <DependentUpon>FormStoreHouses.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -306,11 +336,20 @@
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormReplenishmentStoreHouse.resx">
+      <DependentUpon>FormReplenishmentStoreHouse.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormReportFoodSnack.resx">
       <DependentUpon>FormReportFoodSnack.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormReportOrders.resx">
       <DependentUpon>FormReportOrders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormReportOrdersByDate.resx">
+      <DependentUpon>FormReportOrdersByDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormReportStoreHouseFoods.resx">
+      <DependentUpon>FormReportStoreHouseFoods.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormSnack.resx">
       <DependentUpon>FormSnack.cs</DependentUpon>
@@ -320,6 +359,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormSnacks.resx">
       <DependentUpon>FormSnacks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormStoreHouse.resx">
+      <DependentUpon>FormStoreHouse.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormStoreHouses.resx">
+      <DependentUpon>FormStoreHouses.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -331,12 +376,17 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Report.rdlc" />
+    <EmbeddedResource Include="ReportOrder.rdlc" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\DinerBusinessLogic.ViewModels.FoodViewModel.datasource" />
     <None Include="Properties\DataSources\DinerBusinessLogic.ViewModels.OrderViewModel.datasource" />
     <None Include="Properties\DataSources\DinerBusinessLogic.ViewModels.ReportFoodSnackViewModel.datasource" />
+    <None Include="Properties\DataSources\DinerBusinessLogic.ViewModels.ReportOrderByDateViewModel.datasource" />
     <None Include="Properties\DataSources\DinerBusinessLogic.ViewModels.ReportOrdersViewModel.datasource" />
+    <None Include="Properties\DataSources\DinerBusinessLogic.ViewModels.ReportStoreHouseFoodsViewModel.datasource" />
+    <None Include="Properties\DataSources\DinerBusinessLogic.ViewModels.ReportStoreHouseViewModel.datasource" />
     <None Include="Properties\DataSources\DinerBusinessLogic.ViewModels.SnackViewModel.datasource" />
+    <None Include="Properties\DataSources\DinerBusinessLogic.ViewModels.StoreHouseViewModel.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

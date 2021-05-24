@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DinerViewDatabaseImplement.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialCreaate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -62,6 +62,21 @@ namespace DinerViewDatabaseImplement.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Snacks", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StoreHouses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StoreHouseName = table.Column<string>(nullable: false),
+                    ResponsiblePersonFCS = table.Column<string>(nullable: false),
+                    DateCreate = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StoreHouses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -129,6 +144,33 @@ namespace DinerViewDatabaseImplement.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "StoreHouseFoods",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StoreHouseId = table.Column<int>(nullable: false),
+                    FoodId = table.Column<int>(nullable: false),
+                    Count = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StoreHouseFoods", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StoreHouseFoods_Foods_FoodId",
+                        column: x => x.FoodId,
+                        principalTable: "Foods",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StoreHouseFoods_StoreHouses_StoreHouseId",
+                        column: x => x.StoreHouseId,
+                        principalTable: "StoreHouses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_ClientId",
                 table: "Orders",
@@ -153,6 +195,16 @@ namespace DinerViewDatabaseImplement.Migrations
                 name: "IX_SnackFoods_SnackId",
                 table: "SnackFoods",
                 column: "SnackId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StoreHouseFoods_FoodId",
+                table: "StoreHouseFoods",
+                column: "FoodId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StoreHouseFoods_StoreHouseId",
+                table: "StoreHouseFoods",
+                column: "StoreHouseId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -164,16 +216,22 @@ namespace DinerViewDatabaseImplement.Migrations
                 name: "SnackFoods");
 
             migrationBuilder.DropTable(
+                name: "StoreHouseFoods");
+
+            migrationBuilder.DropTable(
                 name: "Clients");
 
             migrationBuilder.DropTable(
                 name: "Implementers");
 
             migrationBuilder.DropTable(
+                name: "Snacks");
+
+            migrationBuilder.DropTable(
                 name: "Foods");
 
             migrationBuilder.DropTable(
-                name: "Snacks");
+                name: "StoreHouses");
         }
     }
 }

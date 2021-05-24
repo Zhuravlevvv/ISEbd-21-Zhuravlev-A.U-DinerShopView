@@ -18,6 +18,5 @@ namespace DinerBusinessLogic.ViewModels
         public decimal Price { get; set; }
         [DataMember]
         public Dictionary<int, (string, int)> SnackFoods { get; set; }
-        
     }
 }

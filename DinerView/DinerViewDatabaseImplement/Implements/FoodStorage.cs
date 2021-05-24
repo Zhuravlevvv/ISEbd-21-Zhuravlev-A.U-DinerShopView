@@ -11,56 +11,69 @@ namespace DinerViewDatabaseImplement.Implements
 {
     public class FoodStorage : IFoodStorage
     {
+        private Food CreateModel(FoodBindingModel model, Food food)
+        {
+            food.FoodName = model.FoodName;
+            return food;
+        }
+
         public List<FoodViewModel> GetFullList()
         {
             using (var context = new DinerViewDatabase())
             {
-                return context.Foods.Select(rec => new FoodViewModel
-                {
-                    Id = rec.Id,
-                    FoodName = rec.FoodName
-                })
-                .ToList();
+                return context.Foods
+                    .Select(rec => new FoodViewModel
+                    {
+                        Id = rec.Id,
+                        FoodName = rec.FoodName
+                    })
+                    .ToList();
             }
         }
+
         public List<FoodViewModel> GetFilteredList(FoodBindingModel model)
         {
             if (model == null)
             {
                 return null;
             }
+
             using (var context = new DinerViewDatabase())
             {
                 return context.Foods
-                .Where(rec => rec.FoodName.Contains(model.FoodName))
-                .Select(rec => new FoodViewModel
-                {
-                    Id = rec.Id,
-                    FoodName = rec.FoodName
-                })
-                .ToList();
+                    .Where(rec => rec.FoodName.Contains(model.FoodName))
+                    .Select(rec => new FoodViewModel
+                    {
+                        Id = rec.Id,
+                        FoodName = rec.FoodName
+                    })
+                    .ToList();
             }
         }
+
         public FoodViewModel GetElement(FoodBindingModel model)
         {
             if (model == null)
             {
                 return null;
             }
+
             using (var context = new DinerViewDatabase())
             {
                 var food = context.Foods
-                .FirstOrDefault(rec => rec.FoodName == model.FoodName ||
-                rec.Id == model.Id);
+                    .FirstOrDefault(rec => rec.FoodName == model.FoodName ||
+                    rec.Id == model.Id);
+
                 return food != null ?
-                new FoodViewModel
-                {
-                    Id = food.Id,
-                    FoodName = food.FoodName
-                } :
-                null;
+                    new FoodViewModel
+                    {
+                        Id = food.Id,
+                        FoodName = food.FoodName
+                    } :
+                    null;
             }
         }
+
         public void Insert(FoodBindingModel model)
         {
             using (var context = new DinerViewDatabase())
@@ -69,17 +82,19 @@ namespace DinerViewDatabaseImplement.Implements
                 context.SaveChanges();
             }
         }
+
         public void Update(FoodBindingModel model)
         {
             using (var context = new DinerViewDatabase())
             {
-                var element = context.Foods.FirstOrDefault(rec => rec.Id ==
-                model.Id);
-                if (element == null)
+                var food = context.Foods.FirstOrDefault(rec => rec.Id == model.Id);
+
+                if (food == null)
                 {
-                    throw new Exception("Элемент не найден");
+                    throw new Exception("Продукт не найден");
                 }
-                CreateModel(model, element);
+
+                CreateModel(model, food);
                 context.SaveChanges();
             }
         }
@@ -88,23 +103,16 @@ namespace DinerViewDatabaseImplement.Implements
         {
             using (var context = new DinerViewDatabase())
             {
-                Food element = context.Foods.FirstOrDefault(rec => rec.Id ==
-                model.Id);
-                if (element != null)
+                var food = context.Foods.FirstOrDefault(rec => rec.Id == model.Id);
+
+                if (food == null)
                 {
-                    context.Foods.Remove(element);
-                    context.SaveChanges();
+                    throw new Exception("Продукт не найден");
                 }
-                else
-                {
-                    throw new Exception("Элемент не найден");
-                }
+
+                context.Foods.Remove(food);
+                context.SaveChanges();
             }
-        }
-        private Food CreateModel(FoodBindingModel model, Food food)
-        {
-            food.FoodName = model.FoodName;
-            return food;
         }
     }
 }
