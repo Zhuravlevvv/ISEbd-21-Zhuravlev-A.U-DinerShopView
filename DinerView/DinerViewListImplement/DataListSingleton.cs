@@ -11,17 +11,19 @@ namespace DinerViewListImplement.Models
         public List<Food> Foods { get; set; }
         public List<Order> Orders { get; set; }
         public List<Snack> Snacks { get; set; }
+        public List<StoreHouse> StoreHouses { get; set; }
         public List<Client> Clients { get; set; }
         public List<Implementer> Implementers { get; set; }
-        public List<StoreHouse> Storehouses { get; set; }
+        public List<MessageInfo> MessageInfoes { get; set; }
         private DataListSingleton()
         {
             Foods = new List<Food>();
             Orders = new List<Order>();
+            StoreHouses = new List<StoreHouse>();
             Snacks = new List<Snack>();
             Clients = new List<Client>();
             Implementers = new List<Implementer>();
-            Storehouses = new List<StoreHouse>();
+            MessageInfoes = new List<MessageInfo>();
         }
         public static DataListSingleton GetInstance()
         {

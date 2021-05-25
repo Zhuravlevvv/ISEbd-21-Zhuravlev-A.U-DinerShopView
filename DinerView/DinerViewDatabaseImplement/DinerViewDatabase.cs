@@ -9,7 +9,7 @@ namespace DinerViewDatabaseImplement
         {
             if (optionsBuilder.IsConfigured == false)
             {
-                optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=DinerViewDatabaseCompl;Integrated Security=True;MultipleActiveResultSets=True;");
+                optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=DinerViewDatabaseComplicated;Integrated Security=True;MultipleActiveResultSets=True;");
             }
             base.OnConfiguring(optionsBuilder);
         }
@@ -19,7 +19,8 @@ namespace DinerViewDatabaseImplement
         public virtual DbSet<Order> Orders { set; get; }
         public virtual DbSet<Client> Clients { set; get; }
         public virtual DbSet<Implementer> Implementers { set; get; }
-        public virtual DbSet<StoreHouse> StoreHouses { set; get; }
+        public virtual DbSet<MessageInfo> MessageInfoes { set; get; }
+        public virtual DbSet<StoreHouse> StoreHouses { get; set; }
         public virtual DbSet<StoreHouseFood> StoreHouseFoods { set; get; }
     }
 }

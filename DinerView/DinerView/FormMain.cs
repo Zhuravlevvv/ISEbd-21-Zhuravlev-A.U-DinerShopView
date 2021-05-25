@@ -139,6 +139,41 @@ namespace DinerView
             form.ShowDialog();
         }
 
+        private void списокСкладовToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dialog = new SaveFileDialog { Filter = "docx|*.docx" })
+            {
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    report.SaveStoreHousesToWordFile(new ReportBindingModel
+                    {
+                        FileName =
+                   dialog.FileName
+                    });
+                    MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK,
+                   MessageBoxIcon.Information);
+                }
+            }
+        }
+
+        private void списокИнформацииОЗаказахToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormReportOrdersByDate>();
+            form.ShowDialog();
+        }
+
+        private void списокПродуктовНаСкладахToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormReportStoreHouseFoods>();
+            form.ShowDialog();
+        }
+
+        private void письмаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormMails>();
+            form.ShowDialog();
+        }
+
         private void складыToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var form = Container.Resolve<FormStoreHouses>();
