@@ -8,6 +8,8 @@ namespace DinerBusinessLogic.BindingModels
     {
         [DataMember]
         public int? ClientId { get; set; }
+        [DataMember]
+        public int? PageNumber { get; set; }
 
         [DataMember]
         public string MessageId { get; set; }
@@ -23,10 +25,5 @@ namespace DinerBusinessLogic.BindingModels
 
         [DataMember]
         public DateTime DateDelivery { get; set; }
-        [DataMember]
-        public int? PageSize { get; set; }
-
-        [DataMember]
-        public int? Page { get; set; }
     }
 }

@@ -10,19 +10,14 @@ namespace DinerViewDatabaseImplement.Implements
 {
     public class MessageInfoStorage : IMessageInfoStorage
     {
+        private readonly int stringsOnPage = 7;
+
         public List<MessageInfoViewModel> GetFullList()
         {
             using (var context = new DinerViewDatabase())
             {
                 return context.MessageInfoes
-                    .Select(rec => new MessageInfoViewModel
-                    {
-                        MessageId = rec.MessageId,
-                        SenderName = rec.SenderName,
-                        DateDelivery = rec.DateDelivery,
-                        Subject = rec.Subject,
-                        Body = rec.Body
-                    })
+                    .Select(CreateModel)
                     .ToList();
             }
         }
@@ -36,18 +31,19 @@ namespace DinerViewDatabaseImplement.Implements
 
             using (var context = new DinerViewDatabase())
             {
-                return context.MessageInfoes
+                var messageInfoes = context.MessageInfoes
                     .Where(rec => (model.ClientId.HasValue && rec.ClientId == model.ClientId) ||
-                    (!model.ClientId.HasValue && rec.DateDelivery.Date == model.DateDelivery.Date))
-                    .Select(rec => new MessageInfoViewModel
-                    {
-                        MessageId = rec.MessageId,
-                        SenderName = rec.SenderName,
-                        DateDelivery = rec.DateDelivery,
-                        Subject = rec.Subject,
-                        Body = rec.Body
-                    })
-                    .ToList();
+                    (!model.ClientId.HasValue && rec.DateDelivery.Date == model.DateDelivery.Date) ||
+                    (!model.ClientId.HasValue && model.PageNumber.HasValue) ||
+                    (model.ClientId.HasValue && rec.ClientId == model.ClientId && model.PageNumber.HasValue));
+
+                if (model.PageNumber.HasValue)
+                {
+                    messageInfoes = messageInfoes.Skip(stringsOnPage * (model.PageNumber.Value - 1))
+                        .Take(stringsOnPage);
+                }
+
+                return messageInfoes.Select(CreateModel).ToList();
             }
         }
 
@@ -73,30 +69,17 @@ namespace DinerViewDatabaseImplement.Implements
                 context.SaveChanges();
             }
         }
-        public int Count()
-        {
-            using (var context = new DinerViewDatabase())
-            {
-                return context.MessageInfoes.Count();
-            }
-        }
 
-        public List<MessageInfoViewModel> GetMessagesForPage(MessageInfoBindingModel model)
+        public MessageInfoViewModel CreateModel(MessageInfo messageInfo)
         {
-            using (var context = new DinerViewDatabase())
+            return new MessageInfoViewModel
             {
-                return context.MessageInfoes.Where(rec => (model.ClientId.HasValue &&
-                model.ClientId.Value == rec.ClientId) || !model.ClientId.HasValue)
-                    .Skip((model.Page.Value - 1) * model.PageSize.Value).Take(model.PageSize.Value)
-                    .ToList().Select(rec => new MessageInfoViewModel
-                    {
-                        MessageId = rec.MessageId,
-                        SenderName = rec.SenderName,
-                        DateDelivery = rec.DateDelivery,
-                        Subject = rec.Subject,
-                        Body = rec.Body
-                    }).ToList();
-            }
+                MessageId = messageInfo.MessageId,
+                SenderName = messageInfo.SenderName,
+                DateDelivery = messageInfo.DateDelivery,
+                Subject = messageInfo.Subject,
+                Body = messageInfo.Body
+            };
         }
     }
 }

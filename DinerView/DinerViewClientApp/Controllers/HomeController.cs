@@ -1,22 +1,18 @@
-﻿using System;
+﻿using DinerBusinessLogic.BindingModels;
+using DinerBusinessLogic.Enums;
+using DinerBusinessLogic.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using DinerBusinessLogic.ViewModels;
-using DinerBusinessLogic.BindingModels;
+using DinerViewClientApp;
 using DinerViewClientApp.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace DinerViewClientApp.Controllers
 {
     public class HomeController : Controller
     {
-        public HomeController()
-        {
-        }
-
+        [HttpGet]
         public IActionResult Index()
         {
             if (Program.Client == null)
@@ -26,24 +22,11 @@ namespace DinerViewClientApp.Controllers
             return View(APIClient.GetRequest<List<OrderViewModel>>($"api/main/getorders?clientId={Program.Client.Id}"));
         }
 
-        [HttpGet]
-        public IActionResult Privacy()
-        {
-            if (Program.Client == null)
-            {
-                return Redirect("~/Home/Enter");
-            }
-            return View(Program.Client);
-        }
-
         [HttpPost]
         public void Privacy(string login, string password, string fio)
         {
             if (!string.IsNullOrEmpty(login) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(fio))
             {
-                Program.Client.ClientFIO = fio;
-                Program.Client.Email = login;
-                Program.Client.Password = password;
                 APIClient.PostRequest("api/client/updatedata", new ClientBindingModel
                 {
                     Id = Program.Client.Id,
@@ -51,10 +34,68 @@ namespace DinerViewClientApp.Controllers
                     Email = login,
                     Password = password
                 });
+                Program.Client.ClientFIO = fio;
+                Program.Client.Email = login;
+                Program.Client.Password = password;
                 Response.Redirect("Index");
                 return;
             }
             throw new Exception("Введите логин, пароль и ФИО");
+        }
+
+        [HttpGet]
+        public IActionResult Privacy()
+        {
+            if (Program.Client == null)
+            {
+                return Redirect("~/Home/Enter");
+            }
+
+            return View(Program.Client);
+        }
+
+        [HttpGet]
+        public IActionResult Mail(int pageNumber)
+        {
+            Console.WriteLine(Program.PageNumber);
+            if (Program.Client == null)
+            {
+                return Redirect("~/Home/Enter");
+            }
+
+            List<MessageInfoViewModel> model = new List<MessageInfoViewModel>();
+            if (pageNumber > 0)
+            {
+                model = APIClient.GetRequest<List<MessageInfoViewModel>>($"api/client/getmessages?clientId={Program.Client.Id}&pageNumber={pageNumber}");
+            }
+
+            if (model.Count == 0)
+            {
+                model = APIClient.GetRequest<List<MessageInfoViewModel>>($"api/client/getmessages?clientId={Program.Client.Id}&pageNumber={Program.PageNumber}");
+            }
+            else
+            {
+                Program.PageNumber = pageNumber;
+            }
+            ViewBag.Id = Program.PageNumber;
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult NextMailPage()
+        {
+            return Redirect($"~/Home/Mail?pageNumber={Program.PageNumber + 1}");
+        }
+
+        [HttpGet]
+        public IActionResult PrevMailPage()
+        {
+            if (Program.PageNumber > 1)
+            {
+                return Redirect($"~/Home/Mail?pageNumber={Program.PageNumber - 1}");
+            }
+
+            return Redirect($"~/Home/Mail?pageNumber={Program.PageNumber}");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -77,15 +118,17 @@ namespace DinerViewClientApp.Controllers
         {
             if (!string.IsNullOrEmpty(login) && !string.IsNullOrEmpty(password))
             {
-                Program.Client = APIClient.GetRequest<ClientViewModel>($"api/client/login?login={login}&password={password }");
+                Program.Client = APIClient.GetRequest<ClientViewModel>($"api/client/login?login={login}&password={password}");
 
                 if (Program.Client == null)
                 {
                     throw new Exception("Неверный логин/пароль");
                 }
+
                 Response.Redirect("Index");
                 return;
             }
+
             throw new Exception("Введите логин, пароль");
         }
 
@@ -94,14 +137,13 @@ namespace DinerViewClientApp.Controllers
         {
             return View();
         }
+
         [HttpPost]
         public void Register(string login, string password, string fio)
         {
-            if (!string.IsNullOrEmpty(login) && !string.IsNullOrEmpty(password)
-            && !string.IsNullOrEmpty(fio))
+            if (!string.IsNullOrEmpty(login) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(fio))
             {
-                APIClient.PostRequest("api/client/register", new
-                ClientBindingModel
+                APIClient.PostRequest("api/client/register", new ClientBindingModel
                 {
                     ClientFIO = fio,
                     Email = login,
@@ -112,12 +154,14 @@ namespace DinerViewClientApp.Controllers
             }
             throw new Exception("Введите логин, пароль и ФИО");
         }
+
         [HttpGet]
         public IActionResult Create()
         {
-            ViewBag.Packages = APIClient.GetRequest<List<SnackViewModel>>("api/main/getsnacklist");
+            ViewBag.Secures = APIClient.GetRequest<List<SnackViewModel>>("api/main/getsnacklist");
             return View();
         }
+
         [HttpPost]
         public void Create(int snack, int count, decimal sum)
         {
@@ -127,30 +171,19 @@ namespace DinerViewClientApp.Controllers
             }
             APIClient.PostRequest("api/main/createorder", new CreateOrderBindingModel
             {
-                ClientId = (int)Program.Client.Id,
                 SnackId = snack,
-                Count = count,
-                Sum = sum
+                ClientId = (int)Program.Client.Id,
+                Sum = sum,
+                Count = count
             });
             Response.Redirect("Index");
-        }
-
-        public IActionResult Mails(int page = 1)
-        {                                            
-            if (Program.Client == null)
-            {
-                return Redirect("~/Home/Enter");
-            }
-            int pageSize = 7;   // количество элементов на странице
-            return View(APIClient.GetRequest<PageViewModel>($"api/client/GetPage?pageSize={pageSize}" +
-                $"&page={page}&ClientId={Program.Client.Id}"));
         }
 
         [HttpPost]
         public decimal Calc(decimal count, int snack)
         {
-            SnackViewModel prod = APIClient.GetRequest<SnackViewModel>($"api/main/getsnack?snackId={snack}");
-            return count * prod.Price;
+            SnackViewModel sec = APIClient.GetRequest<SnackViewModel>($"api/main/getsnack?snackId={snack}");
+            return count * sec.Price;
         }
     }
 }

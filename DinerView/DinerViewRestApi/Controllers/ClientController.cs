@@ -22,6 +22,7 @@ namespace DinerViewRestApi.Controllers
 
         private readonly int _passwordMinLength = 10;
 
+
         public ClientController(ClientLogic logic, MailLogic mailLogic)
         {
             _logic = logic;
@@ -30,12 +31,17 @@ namespace DinerViewRestApi.Controllers
 
         [HttpGet]
         public ClientViewModel Login(string login, string password) => _logic.Read(new ClientBindingModel
-        { Email = login, Password = password })?[0];
+        {
+            Email = login,
+            Password = password
+        })?[0];
 
         [HttpGet]
-        public List<MessageInfoViewModel> GetMessages(int clientId) =>
-            _mailLogic.Read(new MessageInfoBindingModel { ClientId = clientId });
-
+        public List<MessageInfoViewModel> GetMessages(int clientId, int pageNumber) => _mailLogic.Read(new MessageInfoBindingModel
+        {
+            ClientId = clientId,
+            PageNumber = pageNumber
+        });
 
         [HttpPost]
         public void Register(ClientBindingModel model)
@@ -58,25 +64,12 @@ namespace DinerViewRestApi.Controllers
             {
                 throw new Exception("В качестве логина должна быть указана почта");
             }
-            if (model.Password.Length > _passwordMaxLength || model.Password.Length <
-            _passwordMinLength || !Regex.IsMatch(model.Password,
-            @"^((\w+\d+\W+)|(\w+\W+\d+)|(\d+\w+\W+)|(\d+\W+\w+)|(\W+\w+\d+)|(\W+\d+\w+))[\w\d\W]*$"))
+            if (model.Password.Length > _passwordMaxLength || model.Password.Length < _passwordMinLength ||
+                !Regex.IsMatch(model.Password, @"^((\w+\d+\W+)|(\w+\W+\d+)|(\d+\w+\W+)|(\d+\W+\w+)|(\W+\w+\d+)|(\W+\d+\w+))[\w\d\W]*$"))
             {
-                throw new Exception($"Пароль длиной от {_passwordMinLength} до {_passwordMaxLength }" +
-                    $" должен состоять и из цифр, букв и небуквенных символов");
+                throw new Exception($"Пароль длиной от {_passwordMinLength} до {_passwordMaxLength} " +
+                    $"должен состоять из цифр, букв и небуквенных символов");
             }
-
-        }
-
-        [HttpGet]
-        public PageViewModel GetPage(int pageSize, int page, int ClientId)
-        {
-            return new PageViewModel(_mailLogic.Count(), page, pageSize, _mailLogic.GetMessagesForPage(new MessageInfoBindingModel
-            {
-                Page = page,
-                PageSize = pageSize,
-                ClientId = ClientId
-            }));
         }
     }
 }
