@@ -5,15 +5,25 @@ using DinerViewFileImplement.Models;
 using DinerBusinessLogic.BindingModels;
 using DinerBusinessLogic.Interfaces;
 using DinerBusinessLogic.ViewModels;
+using DinerBusinessLogic.Enums;
 
 namespace DinerViewFileImplement.Implements
 {
     public class OrderStorage : IOrderStorage
     {
         private readonly FileDataListSingleton sourse;
+        public OrderStorage()
+        {
+            sourse = FileDataListSingleton.GetInstance();
+        }
+        public List<OrderViewModel> GetFullList()
+        {
+            return sourse.Orders.Select(CreateModel).ToList();
+        }
         private Order CreateModel(OrderBindingModel model, Order order)
         {
             order.ClientId = (int)model.ClientId;
+            order.ImplementerId = model.ImplementerId.Value;
             order.SnackId = model.SnackId;
             order.Count = model.Count;
             order.Sum = model.Sum;
@@ -25,28 +35,23 @@ namespace DinerViewFileImplement.Implements
         }
         private OrderViewModel CreateModel(Order order)
         {
-            Snack snack = sourse.Snacks.FirstOrDefault(rec => rec.Id == order.SnackId);
             return new OrderViewModel
             {
                 Id = order.Id,
                 ClientId = order.ClientId,
-                SnackName = snack.SnackName,
                 SnackId = order.SnackId,
+                ImplementerId = order.ImplementerId,
                 Count = order.Count,
                 Sum = order.Sum,
                 Status = order.Status,
                 DateCreate = order.DateCreate,
-                DateImplement = order.DateImplement
+                DateImplement = order.DateImplement,
+                SnackName = sourse.Snacks.FirstOrDefault(rec => rec.Id == order.SnackId)?.SnackName,
+                ClientFIO = sourse.Clients.FirstOrDefault(rec => rec.Id == order.ClientId)?.ClientFIO,
+                ImplementerFIO = sourse.Implementers.FirstOrDefault(rec => rec.Id == order.ImplementerId)?.ImplementerFIO
             };
         }
-        public OrderStorage()
-        {
-            sourse = FileDataListSingleton.GetInstance();
-        }
-        public List<OrderViewModel> GetFullList()
-        {
-            return sourse.Orders.Select(CreateModel).ToList();
-        }
+       
         public List<OrderViewModel> GetFilteredList(OrderBindingModel model)
         {
             if (model == null)
@@ -54,11 +59,16 @@ namespace DinerViewFileImplement.Implements
                 return null;
             }
             return sourse.Orders
-                 .Where(rec => (model.ClientId.HasValue && rec.ClientId == model.ClientId) || (!model.DateFrom.HasValue && !model.DateTo.HasValue && rec.DateCreate == model.DateCreate) ||
-                 (model.DateFrom.HasValue && model.DateTo.HasValue && rec.DateCreate.Date
-                 >= model.DateFrom.Value.Date && rec.DateCreate.Date <= model.DateTo.Value.Date))
-                 .Select(CreateModel)
-                 .ToList();
+                     .Where(rec => (!model.DateFrom.HasValue && !model.DateTo.HasValue &&
+                     rec.DateCreate.Date == model.DateCreate.Date) ||
+                     (model.DateFrom.HasValue && model.DateTo.HasValue &&
+                     rec.DateCreate.Date >= model.DateFrom.Value.Date && rec.DateCreate.Date <=
+                     model.DateTo.Value.Date) ||
+                     (model.ClientId.HasValue && rec.ClientId == model.ClientId) ||
+                     (model.FreeOrders.HasValue && model.FreeOrders.Value && rec.Status == OrderStatus.Принят) ||
+                     (model.ImplementerId.HasValue && rec.ImplementerId ==
+                     model.ImplementerId && rec.Status == OrderStatus.Выполняется))
+                     .Select(CreateModel).ToList();
         }
         public OrderViewModel GetElement(OrderBindingModel model)
         {
@@ -66,7 +76,8 @@ namespace DinerViewFileImplement.Implements
             {
                 return null;
             }
-            var order = sourse.Orders.FirstOrDefault(recOder => recOder.Id == model.Id);
+            var order = sourse.Orders
+                 .FirstOrDefault(rec => rec.SnackId == model.SnackId || rec.Id == model.Id);
             return order != null ? CreateModel(order) : null;
         }
         public void Insert(OrderBindingModel model)

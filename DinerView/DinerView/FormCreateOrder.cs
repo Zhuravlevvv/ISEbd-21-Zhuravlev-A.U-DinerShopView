@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using DinerBusinessLogic.BindingModels;
 using DinerBusinessLogic.BusinessLogics;
 using DinerBusinessLogic.ViewModels;
+using System.Collections.Generic;
 using Unity;
 
 namespace DinerView
@@ -13,20 +14,34 @@ namespace DinerView
         public new IUnityContainer Container { get; set; }
         private readonly SnackLogic logicS;
         private readonly OrderLogic logicO;
-        public FormCreateOrder(SnackLogic logicS, OrderLogic logicO)
+        private readonly ClientLogic logicC;
+        public FormCreateOrder(SnackLogic logicS, OrderLogic logicO, ClientLogic logicC)
         {
             InitializeComponent();
             this.logicS = logicS;
             this.logicO = logicO;
+            this.logicC = logicC;
         }
         private void FormCreateOrder_Load(object sender, EventArgs e)
         {
             try
             {
-                var list = logicS.Read(null);
-                comboBoxSnack.DataSource = list;
+                List<SnackViewModel> list = logicS.Read(null);
+                if(list != null)
+                {
+                    comboBoxSnack.DisplayMember = "SnackName";
+                    comboBoxSnack.ValueMember = "Id";
+                    comboBoxSnack.DataSource = list;
+                    comboBoxSnack.SelectedItem = null;
+                }
+                var snack = logicS.Read(null);
+                var clients = logicC.Read(null);
+                comboBoxSnack.DataSource = snack;
                 comboBoxSnack.DisplayMember = "SnackName";
                 comboBoxSnack.ValueMember = "Id";
+                comboBoxClient.DataSource = clients;
+                comboBoxClient.DisplayMember = "ClientFIO";
+                comboBoxClient.ValueMember = "Id";
             }
             catch (Exception ex)
             {
@@ -81,6 +96,7 @@ namespace DinerView
                 logicO.CreateOrder(new CreateOrderBindingModel
                 {
                     SnackId = Convert.ToInt32(comboBoxSnack.SelectedValue),
+                    ClientId = Convert.ToInt32(comboBoxClient.SelectedValue),
                     Count = Convert.ToInt32(textBoxCount.Text),
                     Sum = Convert.ToDecimal(textBoxSum.Text)
                 });

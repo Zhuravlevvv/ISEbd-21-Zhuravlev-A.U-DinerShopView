@@ -1,9 +1,11 @@
 ﻿using DinerBusinessLogic.BindingModels;
 using DinerBusinessLogic.BusinessLogics;
 using Microsoft.Reporting.WebForms;
+using DinerBusinessLogic.ViewModels;
 using System;
 using System.Windows.Forms;
 using Unity;
+using System.Collections.Generic;
 
 namespace DinerView
 {
@@ -13,11 +15,13 @@ namespace DinerView
         public new IUnityContainer Container { get; set; }
 
         private readonly OrderLogic _orderLogic;
+        private readonly WorkModeling workModeling;
         private ReportLogic report;
-        public FormMain(OrderLogic orderLogic, ReportLogic Report)
+        public FormMain(OrderLogic orderLogic, ReportLogic Report, WorkModeling modeling)
         {
             InitializeComponent();
-            this._orderLogic = orderLogic;
+            _orderLogic = orderLogic;
+            workModeling = modeling;
             report = Report;
         }
         private void FormMain_Load(object sender, EventArgs e)
@@ -34,7 +38,9 @@ namespace DinerView
                     dataGridView.DataSource = list;
                     dataGridView.Columns[0].Visible = false;
                     dataGridView.Columns[1].Visible = false;
-                    dataGridView.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    dataGridView.Columns[2].Visible = false;
+                    dataGridView.Columns[3].Visible = false;
+                    dataGridView.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 }
             }
             catch (Exception ex)
@@ -58,44 +64,7 @@ namespace DinerView
             var form = Container.Resolve<FormCreateOrder>();
             form.ShowDialog();
             LoadData();
-        }
-        private void ButtonTakeOrderInWork_Click(object sender, EventArgs e)
-        {
-            if (dataGridView.SelectedRows.Count == 1)
-            {
-                int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
-                try
-                {
-                    _orderLogic.TakeOrderInWork(new ChangeStatusBindingModel { OrderId = id });
-                    LoadData();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
-                   MessageBoxIcon.Error);
-                }
-            }
-        }
-        private void ButtonOrderReady_Click(object sender, EventArgs e)
-        {
-            if (dataGridView.SelectedRows.Count == 1)
-            {
-                int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
-                try
-                {
-                    _orderLogic.FinishOrder(new ChangeStatusBindingModel
-                    {
-                        OrderId = id
-                    });
-                    LoadData();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
-                   MessageBoxIcon.Error);
-                }
-            }
-        }
+        }     
         private void ButtonPayOrder_Click(object sender, EventArgs e)
         {
             if (dataGridView.SelectedRows.Count == 1)
@@ -112,16 +81,6 @@ namespace DinerView
                    MessageBoxIcon.Error);
                 }
             }
-        }
-        private void складыToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var form = Container.Resolve<FormStoreHouses>();
-            form.ShowDialog();
-        }
-        private void пополнениеСкладаToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var form = Container.Resolve<FormReplenishmentStoreHouse>();
-            form.ShowDialog();
         }
         private void ButtonRef_Click(object sender, EventArgs e)
         {
@@ -156,34 +115,34 @@ namespace DinerView
             form.ShowDialog();
         }
 
-        private void списокСкладовToolStripMenuItem_Click(object sender, EventArgs e)
+        private void запускРаботToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var dialog = new SaveFileDialog { Filter = "docx|*.docx" })
-            {
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    report.SaveStoreHousesToWordFile(new ReportBindingModel
-                    {
-                        FileName =
-                   dialog.FileName
-                    });
-                    MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK,
-                   MessageBoxIcon.Information);
-                }
-            }
+            workModeling.DoWork();
+            LoadData();
         }
 
-        private void списокИнформацииОЗаказахToolStripMenuItem_Click(object sender, EventArgs e)
+        private void исполнителиToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormReportOrdersByDate>();
+            var form = Container.Resolve<FormImplementers>();
             form.ShowDialog();
-
         }
 
-        private void списокПродуктовНаСкладахToolStripMenuItem_Click(object sender, EventArgs e)
+        private void клиентыToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormReportStoreHouseFoods>();
+            var form = Container.Resolve<FormClients>();
             form.ShowDialog();
-        }      
+        }
+
+        private void пополнениеСкладаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormReplenishmentStoreHouse>();
+            form.ShowDialog();
+        }
+
+        private void складыToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormStoreHouses>();
+            form.ShowDialog();
+        }
     }
 }

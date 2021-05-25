@@ -13,11 +13,12 @@ namespace DinerViewDatabaseImplement
             }
             base.OnConfiguring(optionsBuilder);
         }
-        public virtual DbSet<Food> Foods { get; set; }
-        public virtual DbSet<Snack> Snacks { get; set; }
-        public virtual DbSet<SnackFood> SnackFoods { get; set; }
-        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<Food> Foods { set; get; }
+        public virtual DbSet<Snack> Snacks { set; get; }
+        public virtual DbSet<SnackFood> SnackFoods { set; get; }
+        public virtual DbSet<Order> Orders { set; get; }
         public virtual DbSet<Client> Clients { set; get; }
+        public virtual DbSet<Implementer> Implementers { set; get; }
         public virtual DbSet<StoreHouse> StoreHouses { set; get; }
         public virtual DbSet<StoreHouseFood> StoreHouseFoods { set; get; }
     }
