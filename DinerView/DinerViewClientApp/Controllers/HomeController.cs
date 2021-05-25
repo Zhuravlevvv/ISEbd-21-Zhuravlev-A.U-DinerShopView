@@ -136,12 +136,12 @@ namespace DinerViewClientApp.Controllers
         }
 
         public IActionResult Mails(int page = 1)
-        {
+        {                                            
             if (Program.Client == null)
             {
                 return Redirect("~/Home/Enter");
             }
-            int pageSize = 7;   // количество элементов на странице            
+            int pageSize = 7;   // количество элементов на странице
             return View(APIClient.GetRequest<PageViewModel>($"api/client/GetPage?pageSize={pageSize}" +
                 $"&page={page}&ClientId={Program.Client.Id}"));
         }

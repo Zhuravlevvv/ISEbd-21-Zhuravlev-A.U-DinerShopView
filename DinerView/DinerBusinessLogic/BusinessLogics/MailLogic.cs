@@ -27,7 +27,8 @@ namespace DinerBusinessLogic.BusinessLogics
 
         private readonly IClientStorage _clientStorage;
 
-        public MailLogic(IMessageInfoStorage messageInfoStorage, IClientStorage clientStorage)
+        public MailLogic(IMessageInfoStorage messageInfoStorage, IClientStorage
+        clientStorage)
         {
             _messageInfoStorage = messageInfoStorage;
             _clientStorage = clientStorage;
@@ -49,7 +50,6 @@ namespace DinerBusinessLogic.BusinessLogics
                 Email = model.FromMailAddress
             });
             model.ClientId = client?.Id;
-
             _messageInfoStorage.Insert(model);
         }
 
@@ -67,21 +67,19 @@ namespace DinerBusinessLogic.BusinessLogics
             {
                 return;
             }
-
             if (string.IsNullOrEmpty(mailLogin) || string.IsNullOrEmpty(mailPassword))
             {
                 return;
             }
-
-            if (string.IsNullOrEmpty(info.MailAddress) || string.IsNullOrEmpty(info.Subject) ||
-                string.IsNullOrEmpty(info.Text))
+            if (string.IsNullOrEmpty(info.MailAddress) ||
+            string.IsNullOrEmpty(info.Subject) || string.IsNullOrEmpty(info.Text))
             {
                 return;
             }
-
             using (var objMailMessage = new MailMessage())
             {
-                using (var objSmtpClient = new SmtpClient(smtpClientHost, smtpClientPort))
+                using (var objSmtpClient = new SmtpClient(smtpClientHost,
+                smtpClientPort))
                 {
                     try
                     {
@@ -91,12 +89,11 @@ namespace DinerBusinessLogic.BusinessLogics
                         objMailMessage.Body = info.Text;
                         objMailMessage.SubjectEncoding = Encoding.UTF8;
                         objMailMessage.BodyEncoding = Encoding.UTF8;
-
                         objSmtpClient.UseDefaultCredentials = false;
                         objSmtpClient.EnableSsl = true;
                         objSmtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-                        objSmtpClient.Credentials = new NetworkCredential(mailLogin, mailPassword);
-
+                        objSmtpClient.Credentials = new NetworkCredential(mailLogin,
+                        mailPassword);
                         await Task.Run(() => objSmtpClient.Send(objMailMessage));
                     }
                     catch (Exception)
@@ -113,34 +110,29 @@ namespace DinerBusinessLogic.BusinessLogics
             {
                 return;
             }
-
             if (string.IsNullOrEmpty(mailLogin) || string.IsNullOrEmpty(mailPassword))
             {
                 return;
             }
-
-            if (info.Storage == null || info.ClientStorage == null)
+            if (info.MessageStorage == null || info.ClientStorage == null)
             {
                 return;
             }
-
             using (var client = new Pop3Client())
             {
                 await Task.Run(() =>
                 {
                     try
                     {
-                        client.Connect(info.PopHost, info.PopPort, SecureSocketOptions.SslOnConnect);
-
+                        client.Connect(info.PopHost, info.PopPort,
+                        SecureSocketOptions.SslOnConnect);
                         client.Authenticate(mailLogin, mailPassword);
-
                         for (int i = 0; i < client.Count; i++)
                         {
                             var message = client.GetMessage(i);
-
                             foreach (var mail in message.From.Mailboxes)
                             {
-                                info.Storage.Insert(new MessageInfoBindingModel
+                                info.MessageStorage.Insert(new MessageInfoBindingModel
                                 {
                                     DateDelivery = message.Date.DateTime,
                                     MessageId = message.MessageId,
@@ -162,6 +154,7 @@ namespace DinerBusinessLogic.BusinessLogics
                 });
             }
         }
+
         public int Count()
         {
             return _messageInfoStorage.Count();

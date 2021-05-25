@@ -36,6 +36,7 @@ namespace DinerViewRestApi.Controllers
         public List<MessageInfoViewModel> GetMessages(int clientId) =>
             _mailLogic.Read(new MessageInfoBindingModel { ClientId = clientId });
 
+
         [HttpPost]
         public void Register(ClientBindingModel model)
         {
